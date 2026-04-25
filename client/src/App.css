@@ -1,0 +1,21 @@
+/* App.css */
+
+#root, .app-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.toolbar {
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.diagram-area {
+    flex: 1;
+}
