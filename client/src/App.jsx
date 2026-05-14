@@ -173,6 +173,10 @@ function App() {
                     case 'class':
                         style.background = '#fff';
                         break;
+                    case 'circle':
+                        style.width = 80;
+                        style.height = 80;
+                        break;
                     case 'textblock':
                         label = `Текст ${currentId}`;
                         style = { width: 150, height: 40, background: 'transparent' };

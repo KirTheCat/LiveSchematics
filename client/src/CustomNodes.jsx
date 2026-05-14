@@ -8,6 +8,8 @@ const inputStyle = {
     height: '100%',
     border: 'none',
     background: 'transparent',
+    boxShadow: 'none',
+    borderRadius: 0,
     textAlign: 'center',
     outline: 'none',
     fontFamily: 'sans-serif',
@@ -39,7 +41,8 @@ export const DefaultBlock = memo(({ data, id, selected, style }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [label, setLabel] = useState(data.label);
     const inputRef = useRef(null);
-    const nodeStyle = style || {};
+
+    const nodeStyle = { ...(style || {}), ...(data.nodeStyle || {}) };
     const textStyle = data.textStyle || {};
 
     useEffect(() => {
@@ -60,9 +63,6 @@ export const DefaultBlock = memo(({ data, id, selected, style }) => {
             style={{
                 width: '100%',
                 height: '100%',
-                background: nodeStyle.background || '#fff',
-               // border: `2px solid ${nodeStyle.borderColor || '#555'}`,
-                //borderRadius: '4px',
                 boxSizing: 'border-box',
                 display: 'flex',
                 alignItems: 'center',
@@ -89,7 +89,7 @@ export const DefaultBlock = memo(({ data, id, selected, style }) => {
     );
 });
 
-// --- 2. Круг ---
+// --- 2. Круг (Ваш код полностью верный) ---
 export const CircleBlock = memo(({ data, id, selected, style }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [label, setLabel] = useState(data.label);
@@ -149,7 +149,6 @@ export const CircleBlock = memo(({ data, id, selected, style }) => {
         </div>
     );
 });
-
 
 // --- 3. Облачко ---
 export const CloudBlock = memo(({ data, id, selected, style }) => {
