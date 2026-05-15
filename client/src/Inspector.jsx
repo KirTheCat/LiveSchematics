@@ -19,7 +19,8 @@ const Inspector = ({
                        onNodeChange,
                        onEdgeChange,
                        showHandles,
-                       onToggleHandles
+                       onToggleHandles,
+                       roomInfo
                    }) => {
 
     const containerStyle = {
@@ -42,6 +43,18 @@ const Inspector = ({
         }
         return marker.type || '';
     };
+
+    const renderRoomInfo = () => (
+        <div style={{ padding: '10px 15px', borderBottom: '1px solid #ddd', background: '#f0f8ff' }}>
+            <h4 style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#333' }}>
+                {roomInfo?.roomName || 'Загрузка...'}
+            </h4>
+            <div style={{ fontSize: '11px', color: '#666', display: 'flex', justifyContent: 'space-between' }}>
+                <span>ID: {roomInfo?.roomId}</span>
+                <span>Создатель: {roomInfo?.creatorName}</span>
+            </div>
+        </div>
+    );
 
     const renderGlobalSettings = () => (
         <div style={{ padding: '10px 15px', borderBottom: '1px solid #ddd', background: '#f9f9f9' }}>
@@ -98,6 +111,7 @@ const Inspector = ({
                 {isOpen && (
                     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 
+                        {roomInfo && renderRoomInfo()}
                         {renderGlobalSettings()}
 
                         <div style={{ padding: '15px', flex: 1, overflowY: 'auto' }}>
