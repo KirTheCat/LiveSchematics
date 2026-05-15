@@ -33,9 +33,9 @@ const DiagramPage = () => {
     };
 
     return (
-        <div style={{ width: '100vw', height: '100vh', display: 'flex' }}>
+        <div style={{ width: '100vw', height: '100vh', display: 'flex', overflow: 'hidden' }}>
             <Toolbar />
-            <div style={{ flexGrow: 1 }}>
+            <div style={{ flexGrow: 1, position: 'relative'}}>
                 <ReactFlowProvider>
                     <ReactFlow
                         className={showHandles ? '' : 'hide-handles'}
