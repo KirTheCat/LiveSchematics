@@ -1,4 +1,4 @@
-// Inspector.jsx
+// src/Inspector.jsx
 import React from 'react';
 
 const MARKER_OPTIONS = [
@@ -23,16 +23,20 @@ const Inspector = ({
                        roomInfo
                    }) => {
 
+    // --- Стили ---
     const containerStyle = {
-        width: isOpen ? '250px' : '40px',
+        width: isOpen ? '280px' : '40px',
+        minWidth: isOpen ? '280px' : '40px',
         background: '#fff',
         borderLeft: '1px solid #ddd',
         transition: 'width 0.2s ease-in-out',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
+        height: '100%',
         overflow: 'hidden',
-        height: '100%'
+        boxSizing: 'border-box',
+        zIndex: 10
     };
 
     const getMarkerId = (marker) => {
@@ -44,55 +48,48 @@ const Inspector = ({
         return marker.type || '';
     };
 
+    // --- Блок: Информация о комнате ---
     const renderRoomInfo = () => (
-        <div style={{ padding: '10px 15px', borderBottom: '1px solid #ddd', background: '#f0f8ff' }}>
-            <h4 style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#333' }}>
+        <div style={styles.infoBlock}>
+            <h4 style={styles.roomTitle} title={roomInfo?.roomName}>
                 {roomInfo?.roomName || 'Загрузка...'}
             </h4>
-            <div style={{ fontSize: '11px', color: '#666', display: 'flex', justifyContent: 'space-between' }}>
-                <span>ID: {roomInfo?.roomId}</span>
-                <span>Создатель: {roomInfo?.creatorName}</span>
+            <div style={styles.roomDetails}>
+                <span style={styles.detailItem}>
+                    ID: <span style={styles.detailValue}>{roomInfo?.roomId || '...'}</span>
+                </span>
+                <span style={styles.detailItem}>
+                    Создатель: <span style={styles.detailValue}>{roomInfo?.creatorName || '...'}</span>
+                </span>
             </div>
         </div>
     );
 
+    // --- Блок: Глобальные настройки (Точки) ---
     const renderGlobalSettings = () => (
-        <div style={{ padding: '10px 15px', borderBottom: '1px solid #ddd', background: '#f9f9f9' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '12px', color: '#333' }}>
-                    Показать точки связей
-                </span>
-
+        <div style={styles.settingsBlock}>
+            <div style={styles.toggleRow}>
+                <span style={styles.toggleLabel}>Показать точки связей</span>
                 <div
                     onClick={onToggleHandles}
                     style={{
-                        width: '40px',
-                        height: '20px',
-                        backgroundColor: showHandles ? '#007bff' : '#ccc',
-                        borderRadius: '10px',
-                        position: 'relative',
-                        cursor: 'pointer',
-                        transition: 'background-color 0.2s'
+                        ...styles.switchTrack,
+                        backgroundColor: showHandles ? '#007bff' : '#ccc'
                     }}
                 >
                     <div style={{
-                        width: '16px',
-                        height: '16px',
-                        backgroundColor: 'white',
-                        borderRadius: '50%',
-                        position: 'absolute',
-                        top: '2px',
-                        left: showHandles ? '22px' : '2px',
-                        transition: 'left 0.2s',
-                        boxShadow: '0 1px 2px rgba(0,0,0,0.2)'
+                        ...styles.switchThumb,
+                        left: showHandles ? '22px' : '2px'
                     }} />
                 </div>
             </div>
         </div>
     );
 
-    // --- Рендер для Узла ---
-    if (selectedNode) {
+    // --- Блок: Свойства фигуры ---
+    const renderNodeProperties = () => {
+        if (!selectedNode) return null;
+
         const nodeStyle = selectedNode.data.nodeStyle || selectedNode.style || {};
         const textStyle = selectedNode.data.textStyle || {};
 
@@ -105,105 +102,107 @@ const Inspector = ({
         };
 
         return (
-            <aside style={containerStyle}>
-                <button onClick={onToggle} style={styles.toggleBtn}>{isOpen ? '▶' : '◀'}</button>
+            <div style={styles.propertiesSection}>
+                <h3 style={styles.sectionTitle}>Свойства фигуры</h3>
 
-                {isOpen && (
-                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                <div style={styles.group}>
+                    <label style={styles.label}>Цвет фона:</label>
+                    <input type="color" value={nodeStyle.background || '#ffffff'} onChange={(e) => handleChange('background', e.target.value)} />
+                </div>
 
-                        {roomInfo && renderRoomInfo()}
-                        {renderGlobalSettings()}
+                <div style={styles.group}>
+                    <label style={styles.label}>Цвет границы:</label>
+                    <input type="color" value={nodeStyle.borderColor || '#555555'} onChange={(e) => handleChange('borderColor', e.target.value)} />
+                </div>
 
-                        <div style={{ padding: '15px', flex: 1, overflowY: 'auto' }}>
-                            <h3 style={styles.title}>Свойства фигуры</h3>
+                <div style={styles.group}>
+                    <label style={styles.label}>Цвет текста:</label>
+                    <input type="color" value={textStyle.color || '#000000'} onChange={(e) => handleChange('color', e.target.value, true)} />
+                </div>
 
-                            <div style={styles.group}>
-                                <label style={styles.label}>Цвет фона:</label>
-                                <input type="color" value={nodeStyle.background || '#ffffff'} onChange={(e) => handleChange('background', e.target.value)} />
-                            </div>
-
-                            <div style={styles.group}>
-                                <label style={styles.label}>Цвет границы:</label>
-                                <input type="color" value={nodeStyle.borderColor || '#555555'} onChange={(e) => handleChange('borderColor', e.target.value)} />
-                            </div>
-
-                            <div style={styles.group}>
-                                <label style={styles.label}>Цвет текста:</label>
-                                <input type="color" value={textStyle.color || '#000000'} onChange={(e) => handleChange('color', e.target.value, true)} />
-                            </div>
-
-                            <div style={styles.group}>
-                                <label style={styles.label}>Размер текста:</label>
-                                <input type="number" value={parseInt(textStyle.fontSize || 14)} onChange={(e) => handleChange('fontSize', `${e.target.value}px`, true)} style={styles.input} />
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </aside>
+                <div style={styles.group}>
+                    <label style={styles.label}>Размер текста:</label>
+                    <input type="number" value={parseInt(textStyle.fontSize || 14)} onChange={(e) => handleChange('fontSize', `${e.target.value}px`, true)} style={styles.input} />
+                </div>
+            </div>
         );
-    }
+    };
 
-    // --- Рендер для Связи ---
-    if (selectedEdge) {
+    // --- Блок: Свойства связи ---
+    const renderEdgeProperties = () => {
+        if (!selectedEdge) return null;
+
         const edgeStyle = selectedEdge.style || {};
-
         const handleChange = (key, value) => onEdgeChange(selectedEdge.id, { [key]: value });
         const handleMarkerChange = (pos, value) => handleChange(pos, value);
 
         return (
-            <aside style={containerStyle}>
-                <button onClick={onToggle} style={styles.toggleBtn}>{isOpen ? '▶' : '◀'}</button>
-                {isOpen && (
-                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                        {renderGlobalSettings()}
-                        <div style={{ padding: '15px', flex: 1, overflowY: 'auto' }}>
-                            <h3 style={styles.title}>Свойства связи</h3>
-                            <div style={styles.group}>
-                                <label style={styles.label}>Тип линии:</label>
-                                <select value={selectedEdge.type || 'smoothstep'} onChange={(e) => handleChange('type', e.target.value)} style={styles.select}>
-                                    <option value="straight">Прямая</option>
-                                    <option value="smoothstep">С изломом</option>
-                                    <option value="bezier">Плавная</option>
-                                </select>
-                            </div>
-                            <div style={styles.group}>
-                                <label style={styles.label}>Стиль:</label>
-                                <select value={edgeStyle.strokeDasharray || '0'} onChange={(e) => handleChange('style', { ...edgeStyle, strokeDasharray: e.target.value })} style={styles.select}>
-                                    <option value="0">Сплошная</option>
-                                    <option value="5 5">Пунктир</option>
-                                </select>
-                            </div>
-                            <div style={styles.group}>
-                                <label style={styles.label}>Цвет:</label>
-                                <input type="color" value={edgeStyle.stroke || '#333'} onChange={(e) => handleChange('style', { ...edgeStyle, stroke: e.target.value })} />
-                            </div>
-                            <div style={styles.group}>
-                                <label style={styles.label}>Начало:</label>
-                                <select value={getMarkerId(selectedEdge.markerStart)} onChange={(e) => handleMarkerChange('markerStart', e.target.value)} style={styles.select}>
-                                    {MARKER_OPTIONS.map(opt => (<option key={opt.value} value={opt.value}>{opt.label}</option>))}
-                                </select>
-                            </div>
-                            <div style={styles.group}>
-                                <label style={styles.label}>Конец:</label>
-                                <select value={getMarkerId(selectedEdge.markerEnd)} onChange={(e) => handleMarkerChange('markerEnd', e.target.value)} style={styles.select}>
-                                    {MARKER_OPTIONS.map(opt => (<option key={opt.value} value={opt.value}>{opt.label}</option>))}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </aside>
-        );
-    }
+            <div style={styles.propertiesSection}>
+                <h3 style={styles.sectionTitle}>Свойства связи</h3>
 
-    // --- Пустое состояние ---
+                <div style={styles.group}>
+                    <label style={styles.label}>Тип линии:</label>
+                    <select value={selectedEdge.type || 'smoothstep'} onChange={(e) => handleChange('type', e.target.value)} style={styles.select}>
+                        <option value="straight">Прямая</option>
+                        <option value="smoothstep">С изломом</option>
+                        <option value="bezier">Плавная</option>
+                    </select>
+                </div>
+
+                <div style={styles.group}>
+                    <label style={styles.label}>Стиль:</label>
+                    <select value={edgeStyle.strokeDasharray || '0'} onChange={(e) => handleChange('style', { ...edgeStyle, strokeDasharray: e.target.value })} style={styles.select}>
+                        <option value="0">Сплошная</option>
+                        <option value="5 5">Пунктир</option>
+                    </select>
+                </div>
+
+                <div style={styles.group}>
+                    <label style={styles.label}>Цвет:</label>
+                    <input type="color" value={edgeStyle.stroke || '#333'} onChange={(e) => handleChange('style', { ...edgeStyle, stroke: e.target.value })} />
+                </div>
+
+                <div style={styles.group}>
+                    <label style={styles.label}>Начало:</label>
+                    <select value={getMarkerId(selectedEdge.markerStart)} onChange={(e) => handleMarkerChange('markerStart', e.target.value)} style={styles.select}>
+                        {MARKER_OPTIONS.map(opt => (<option key={opt.value} value={opt.value}>{opt.label}</option>))}
+                    </select>
+                </div>
+
+                <div style={styles.group}>
+                    <label style={styles.label}>Конец:</label>
+                    <select value={getMarkerId(selectedEdge.markerEnd)} onChange={(e) => handleMarkerChange('markerEnd', e.target.value)} style={styles.select}>
+                        {MARKER_OPTIONS.map(opt => (<option key={opt.value} value={opt.value}>{opt.label}</option>))}
+                    </select>
+                </div>
+            </div>
+        );
+    };
+
+    // --- Рендер ---
     return (
         <aside style={containerStyle}>
-            <button onClick={onToggle} style={styles.toggleBtn}>{isOpen ? '▶' : '◀'}</button>
+
+            <button onClick={onToggle} style={styles.toggleBtn}>
+                {isOpen ? '▶' : '◀'}
+            </button>
+
             {isOpen && (
-                <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                <div style={styles.contentWrapper}>
+
+                    {renderRoomInfo()}
                     {renderGlobalSettings()}
-                    <p style={{ ...styles.hint, textAlign: 'center', padding: '20px' }}>Выберите элемент</p>
+
+                    <div style={styles.divider}></div>
+
+                    <div style={styles.scrollArea}>
+                        {renderNodeProperties()}
+                        {renderEdgeProperties()}
+
+                        {!selectedNode && !selectedEdge && (
+                            <p style={styles.hint}>Выберите элемент на холсте для редактирования</p>
+                        )}
+                    </div>
                 </div>
             )}
         </aside>
@@ -211,13 +210,139 @@ const Inspector = ({
 };
 
 const styles = {
-    toggleBtn: { position: 'absolute', top: '10px', left: '10px', border: 'none', background: '#f0f0f0', cursor: 'pointer', borderRadius: '4px', width: '25px', height: '25px', padding: 0, fontSize: '12px', zIndex: 10 },
-    title: { marginTop: '0', marginBottom: '20px', fontSize: '16px', fontWeight: 'bold' },
-    group: { marginBottom: '15px', display: 'flex', flexDirection: 'column', gap: '5px' },
-    label: { fontSize: '12px', color: '#666' },
-    input: { padding: '5px', border: '1px solid #ccc', borderRadius: '4px' },
-    select: { padding: '5px', border: '1px solid #ccc', borderRadius: '4px' },
-    hint: { fontSize: '11px', color: '#999', marginTop: '10px' }
+    toggleBtn: {
+        position: 'absolute',
+        top: '10px',
+        left: '10px',
+        border: 'none',
+        background: '#f0f0f0',
+        cursor: 'pointer',
+        borderRadius: '4px',
+        width: '25px',
+        height: '25px',
+        padding: 0,
+        fontSize: '12px',
+        zIndex: 20,
+        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+    },
+    contentWrapper: {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        paddingTop: '40px',
+        boxSizing: 'border-box',
+        overflow: 'hidden'
+    },
+    infoBlock: {
+        padding: '15px',
+        borderBottom: '1px solid #eee',
+        background: '#f9f9f9'
+    },
+    roomTitle: {
+        margin: '0 0 10px 0',
+        fontSize: '16px',
+        fontWeight: 'bold',
+        color: '#333',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+    },
+    roomDetails: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '4px'
+    },
+    detailItem: {
+        fontSize: '12px',
+        color: '#666',
+        wordBreak: 'break-all'
+    },
+    detailValue: {
+        fontWeight: '500',
+        color: '#333'
+    },
+    settingsBlock: {
+        padding: '15px',
+        borderBottom: '1px solid #eee'
+    },
+    toggleRow: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '10px'
+    },
+    toggleLabel: {
+        fontSize: '12px',
+        color: '#333'
+    },
+    switchTrack: {
+        width: '40px',
+        height: '20px',
+        borderRadius: '10px',
+        position: 'relative',
+        cursor: 'pointer',
+        transition: 'background-color 0.2s',
+        flexShrink: 0
+    },
+    switchThumb: {
+        width: '16px',
+        height: '16px',
+        backgroundColor: 'white',
+        borderRadius: '50%',
+        position: 'absolute',
+        top: '2px',
+        transition: 'left 0.2s',
+        boxShadow: '0 1px 2px rgba(0,0,0,0.2)'
+    },
+    divider: {
+        height: '10px',
+        background: '#f0f2f5'
+    },
+    scrollArea: {
+        flex: 1,
+        overflowY: 'auto',
+        padding: '15px'
+    },
+    propertiesSection: {
+        marginBottom: '20px'
+    },
+    sectionTitle: {
+        marginTop: '0',
+        marginBottom: '15px',
+        fontSize: '14px',
+        fontWeight: 'bold',
+        color: '#555'
+    },
+    group: {
+        marginBottom: '12px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '5px'
+    },
+    label: {
+        fontSize: '12px',
+        color: '#666'
+    },
+    input: {
+        padding: '5px',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
+        width: '100%',
+        boxSizing: 'border-box'
+    },
+    select: {
+        padding: '5px',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
+        width: '100%',
+        boxSizing: 'border-box'
+    },
+    hint: {
+        fontSize: '12px',
+        color: '#999',
+        textAlign: 'center',
+        marginTop: '20px'
+    }
 };
 
 export default Inspector;
