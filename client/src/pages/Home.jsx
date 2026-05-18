@@ -36,7 +36,7 @@ const Home = () => {
     return (
         <div style={styles.container}>
             <div style={styles.card}>
-                <h1 style={styles.title}>Diagram App</h1>
+                <h1 style={styles.title}>LiveSchematics</h1>
 
                 <div style={styles.switchContainer}>
                     <button

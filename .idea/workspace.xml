@@ -4,17 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b03175-5647-4966-a20c-688edb0341d7" name="Changes" comment="fixed design of 'circle' and 'block' tools">
-      <change afterPath="$PROJECT_DIR$/client/src/components/MarkerDefinitions.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/useDiagram.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/pages/DiagramPage.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/pages/Home.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/types/nodeTypes.js" afterDir="false" />
+    <list default="true" id="08b03175-5647-4966-a20c-688edb0341d7" name="Changes" comment="Fixed textblock and UML block&#10;minor fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Inspector.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Inspector.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Home.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,29 +55,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Node.js.App.js.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "master",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/Users/kiril/Dev/LiveSchematics_client",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.start.executor": "Run",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "C:\\Users\\kiril\\MyPrograms\\WebStorm 2024.3.5\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Node.js.App.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/kiril/Dev/LiveSchematics_client&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\kiril\\MyPrograms\\WebStorm 2024.3.5\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\kiril\Dev\LiveSchematics_client\client" />
@@ -123,7 +119,10 @@
       <workItem from="1778672106977" duration="6641000" />
       <workItem from="1778755776418" duration="4679000" />
       <workItem from="1778841485010" duration="151000" />
-      <workItem from="1778842217413" duration="5483000" />
+      <workItem from="1778842217413" duration="7252000" />
+      <workItem from="1779015539343" duration="12800000" />
+      <workItem from="1779103849587" duration="2834000" />
+      <workItem from="1779122096740" duration="5576000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -157,7 +156,39 @@
       <option name="project" value="LOCAL" />
       <updated>1778761548254</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Refactored App.jsx,&#10;added Home and Diagram pages,&#10;added a form for creating a room and connecting to it">
+      <option name="closed" value="true" />
+      <created>1778849960392</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1778849960392</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Updated Inspector.jsx">
+      <option name="closed" value="true" />
+      <created>1778851201202</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1778851201202</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Updated Toolbar.jsx">
+      <option name="closed" value="true" />
+      <created>1778851874773</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1778851874773</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fixed textblock and UML block&#10;minor fixes">
+      <option name="closed" value="true" />
+      <created>1779128603624</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1779128603624</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,6 +244,10 @@
     <MESSAGE value="Added more instruments to work with" />
     <MESSAGE value="Increased number of tools, added inspector, improved design" />
     <MESSAGE value="fixed design of 'circle' and 'block' tools" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed design of 'circle' and 'block' tools" />
+    <MESSAGE value="Refactored App.jsx,&#10;added Home and Diagram pages,&#10;added a form for creating a room and connecting to it" />
+    <MESSAGE value="Updated Inspector.jsx" />
+    <MESSAGE value="Updated Toolbar.jsx" />
+    <MESSAGE value="Fixed textblock and UML block&#10;minor fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed textblock and UML block&#10;minor fixes" />
   </component>
 </project>
