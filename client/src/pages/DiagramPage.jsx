@@ -47,6 +47,9 @@ const DiagramPage = () => {
                         onInit={diagramLogic.onInit}
                         onDrop={diagramLogic.onDrop}
                         onDragOver={diagramLogic.onDragOver}
+                        onNodeDrag={diagramLogic.onNodeDrag}
+                        onNodeDragStop={diagramLogic.onNodeDragStop}
+                        onNodeDragStart={diagramLogic.onNodeDragStart}
                         nodeTypes={nodeTypes}
                         defaultEdgeOptions={defaultEdgeOptions}
                         isValidConnection={diagramLogic.isValidConnection}

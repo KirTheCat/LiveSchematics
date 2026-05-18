@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
 import { Handle, Position, NodeResizer } from 'reactflow';
 
-// --- Общие стили ---
 const inputStyle = {
     width: '100%',
     height: '100%',
@@ -213,44 +212,56 @@ export const TextBlock = memo(({ data, id, selected, style }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [label, setLabel] = useState(data.label);
     const inputRef = useRef(null);
-    const nodeStyle = style || {};
-    const textStyle = data.textStyle || {};
 
-    useEffect(() => {
-        if (isEditing && inputRef.current) {
-            inputRef.current.focus();
-            inputRef.current.select();
-        }
-    }, [isEditing]);
+    const nodeStyle = { ...(style || {}), ...(data.nodeStyle || {}) };
+    const textStyle = data.textStyle || {};
+    const isNested = !!data.parentId;
 
     const handleBlur = () => {
         setIsEditing(false);
         if (label.trim() === '') {
-            setTimeout(() => {
-                if (data.onDelete) data.onDelete(id);
-            }, 0);
+            setTimeout(() => { if (data.onDelete) data.onDelete(id); }, 0);
         } else {
             data.label = label;
         }
     };
 
+    const nestedStyle = {
+        width: nodeStyle.width || '100%',
+        height: nodeStyle.height || 25,
+        background: nodeStyle.background || '#f8f9fa',
+        border: 'none',
+        borderBottom: '1px solid #dee2e6',
+        borderRadius: 0,
+        cursor: 'move'
+    };
+
+    const standaloneStyle = {
+        width: '100%',
+        height: '100%',
+        background: nodeStyle.background || 'transparent',
+        border: selected ? '1px dashed #ccc' : 'none',
+        borderRadius: '2px'
+    };
+
+    const currentStyle = isNested ? nestedStyle : standaloneStyle;
+
     return (
         <div
             onDoubleClick={() => setIsEditing(true)}
             style={{
-                width: '100%',
-                height: '100%',
-                background: nodeStyle.background || 'transparent',
-                border: selected ? '1px dashed #ccc' : 'none',
+                ...currentStyle,
                 boxSizing: 'border-box',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: isNested ? 'left' : 'center',
+                padding: '0 5px',
                 overflow: 'hidden',
+                color: textStyle.color || '#000'
             }}
         >
-            <NodeResizer color="#aaa" isVisible={selected} minWidth={50} minHeight={20} lineStyle={{ border: '1px dashed #aaa' }} />
-            <UniversalHandles />
+            {!isNested && <UniversalHandles />}
+
             {isEditing ? (
                 <input
                     ref={inputRef}
@@ -263,14 +274,19 @@ export const TextBlock = memo(({ data, id, selected, style }) => {
                         background: 'transparent',
                         outline: 'none',
                         fontSize: textStyle.fontSize || '14px',
-                        color: textStyle.color || '#000',
-                        textAlign: 'center',
                         width: '100%',
-                        padding: '5px'
+                        color: 'inherit'
                     }}
                 />
             ) : (
-                <div style={{ fontSize: textStyle.fontSize || '14px', color: textStyle.color || '#000', whiteSpace: 'pre-wrap', textAlign: 'center' }}>
+                <div style={{
+                    fontSize: textStyle.fontSize || '14px',
+                    width: '100%',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    color: 'inherit'
+                }}>
                     {label}
                 </div>
             )}
@@ -278,7 +294,7 @@ export const TextBlock = memo(({ data, id, selected, style }) => {
     );
 });
 
-// --- 5. Актер (Человечек) ---
+// --- 5. Актер ---
 export const ActorBlock = memo(({ data, id, selected, style }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [label, setLabel] = useState(data.label);
@@ -304,24 +320,29 @@ export const ActorBlock = memo(({ data, id, selected, style }) => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'flex-start',
-                background: 'transparent', // Прозрачный контейнер
-                paddingTop: '10px'
+                background: 'transparent',
+                paddingTop: '5px',
+                boxSizing: 'border-box'
             }}
         >
             <NodeResizer color={strokeColor} isVisible={selected} minWidth={40} minHeight={80} />
             <UniversalHandles />
 
             {/* SVG Человечка */}
-            <svg width="40" height="60" viewBox="0 0 100 150" style={{ flexShrink: 0 }}>
+            <svg width="100%" height="70%" viewBox="0 0 100 150" preserveAspectRatio="xMidYMid meet" style={{ flexShrink: 0, overflow: 'visible' }}>
+                {/* Голова */}
                 <circle cx="50" cy="25" r="20" fill={fillColor} stroke={strokeColor} strokeWidth="3" />
+                {/* Тело */}
                 <line x1="50" y1="45" x2="50" y2="100" stroke={strokeColor} strokeWidth="3" />
+                {/* Руки */}
                 <line x1="20" y1="70" x2="80" y2="70" stroke={strokeColor} strokeWidth="3" />
+                {/* Ноги */}
                 <line x1="50" y1="100" x2="20" y2="150" stroke={strokeColor} strokeWidth="3" />
                 <line x1="50" y1="100" x2="80" y2="150" stroke={strokeColor} strokeWidth="3" />
             </svg>
 
             {/* Подпись */}
-            <div style={{ marginTop: '5px', width: '100%', textAlign: 'center' }}>
+            <div style={{ marginTop: '5px', width: '100%', textAlign: 'center', maxHeight: '30%' }}>
                 {isEditing ?
                     <input
                         ref={inputRef}
@@ -450,7 +471,7 @@ export const DiamondBlock = memo(({ data, id, selected, style }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: 'transparent', // Прозрачный контейнер
+                background: 'transparent',
                 overflow: 'hidden'
             }}
         >
@@ -498,48 +519,99 @@ export const DiamondBlock = memo(({ data, id, selected, style }) => {
 
 // --- 8. Класс (UML) ---
 export const ClassBlock = memo(({ data, id, selected, style }) => {
-    const nodeStyle = style || {};
+    const nodeStyle = { ...(style || {}), ...(data.nodeStyle || {}) };
     const textStyle = data.textStyle || {};
 
+    const [name, setName] = useState(data.label || 'ClassName');
+    useEffect(() => { data.label = name; }, [name]);
+
+    const activeZone = data.activeDropZone;
+
+    const classHeight = nodeStyle.height || 200;
+    const splitY = data.splitY || (40 + (classHeight - 40)/2);
+
     return (
-        <div style={{
-            width: '100%',
-            height: '100%',
-            background: nodeStyle.background || '#fff',
-            border: `2px solid ${nodeStyle.borderColor || '#555'}`,
-            borderRadius: '4px',
-            boxSizing: 'border-box',
-            display: 'flex',
-            flexDirection: 'column',
-            overflow: 'hidden'
-        }}>
-            <NodeResizer color="#555" isVisible={selected} minWidth={100} minHeight={100} />
+        <div
+            style={{
+                width: '100%',
+                height: '100%',
+                background: nodeStyle.background || '#fff',
+                border: `2px solid ${nodeStyle.borderColor || '#555'}`,
+                borderRadius: '4px',
+                boxSizing: 'border-box',
+                display: 'flex',
+                flexDirection: 'column',
+                minWidth: '200px',
+                minHeight: '200px',
+                position: 'relative',
+                transition: 'height 0.2s ease'
+            }}
+        >
+            <NodeResizer color="#555" isVisible={selected} minWidth={200} minHeight={150} />
             <UniversalHandles />
 
-            <div style={{
-                borderBottom: `2px solid ${nodeStyle.borderColor || '#555'}`,
-                padding: '8px',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                background: nodeStyle.background || '#fff',
-                fontSize: textStyle.fontSize || '14px',
-                color: textStyle.color || '#000'
-            }}>
-                {data.label}
+            {/* Заголовок */}
+            <div
+                style={{
+                    height: '40px',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    borderBottom: `2px solid ${nodeStyle.borderColor || '#555'}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: '#f8f9fa',
+                    zIndex: 2
+                }}
+            >
+                <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    style={{
+                        width: '90%',
+                        border: 'none',
+                        background: 'transparent',
+                        outline: 'none',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        fontSize: '14px',
+                        color: textStyle.color || '#000'
+                    }}
+                />
             </div>
-            <div style={{
-                borderBottom: `2px solid ${nodeStyle.borderColor || '#555'}`,
-                padding: '8px',
-                flexGrow: 1,
-                fontSize: '12px',
-                textAlign: 'left',
-                whiteSpace: 'pre-wrap'
-            }}>
-                {data.attributes || ''}
-            </div>
-            <div style={{ padding: '8px', flexGrow: 1, fontSize: '12px', textAlign: 'left', whiteSpace: 'pre-wrap' }}>
-                {data.methods || ''}
-            </div>
+
+            {/* Зона Атрибутов */}
+            <div
+                style={{
+                    position: 'absolute',
+                    top: '40px',
+                    left: 0,
+                    right: 0,
+                    height: `${splitY - 40}px`,
+                    background: activeZone === 'attributes' ? 'rgba(0, 123, 255, 0.1)' : '#fff',
+                    borderBottom: `2px solid ${nodeStyle.borderColor || '#555'}`,
+                    transition: 'background 0.2s',
+                    overflow: 'hidden',
+                    zIndex: 1
+                }}
+            />
+
+            {/* Зона Методов */}
+            <div
+                style={{
+                    position: 'absolute',
+                    top: `${splitY}px`,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: activeZone === 'methods' ? 'rgba(0, 123, 255, 0.1)' : '#fff',
+                    transition: 'background 0.2s',
+                    overflow: 'hidden',
+                    zIndex: 1
+                }}
+            />
         </div>
     );
 });
@@ -547,6 +619,10 @@ export const ClassBlock = memo(({ data, id, selected, style }) => {
 // --- 9. Группа / Контейнер ---
 export const GroupBlock = memo(({ data, id, selected, style }) => {
     const nodeStyle = style || {};
+    const [label, setLabel] = useState(data.label || "Группа");
+    const [isEditing, setIsEditing] = useState(false);
+
+    useEffect(() => { data.label = label; }, [label]);
 
     return (
         <div style={{
@@ -557,18 +633,36 @@ export const GroupBlock = memo(({ data, id, selected, style }) => {
             borderRadius: '10px',
             boxSizing: 'border-box',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            pointerEvents: 'none',
+            zIndex: -1
         }}>
             <NodeResizer color="#aaa" isVisible={selected} minWidth={200} minHeight={150} />
             <UniversalHandles />
 
-            <div style={{
-                padding: '5px 10px',
-                borderBottom: `1px dashed ${nodeStyle.borderColor || '#aaa'}`,
-                fontWeight: 'bold',
-                color: '#555'
-            }}>
-                {data.label}
+            <div
+                onDoubleClick={() => setIsEditing(true)}
+                style={{
+                    padding: '5px 10px',
+                    borderBottom: `1px dashed ${nodeStyle.borderColor || '#aaa'}`,
+                    fontWeight: 'bold',
+                    color: '#555',
+                    pointerEvents: 'auto',
+                    cursor: 'pointer'
+                }}>
+                {isEditing ? (
+                    <input
+                        value={label}
+                        onChange={(e) => setLabel(e.target.value)}
+                        onBlur={() => setIsEditing(false)}
+                        autoFocus
+                        style={{
+                            border: 'none', background: 'transparent', outline: 'none', width: '100%', fontWeight: 'bold', color: '#555'
+                        }}
+                    />
+                ) : (
+                    label
+                )}
             </div>
             <div style={{ flexGrow: 1 }}></div>
         </div>
