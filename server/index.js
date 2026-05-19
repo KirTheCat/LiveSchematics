@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: '*' }));
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -16,7 +16,8 @@ const io = new Server(server, {
     }
 });
 
-mongoose.connect('mongodb://localhost:27017/diagram-app', {
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/diagram-app';
+mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
