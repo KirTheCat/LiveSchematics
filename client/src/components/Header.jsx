@@ -1,7 +1,6 @@
-// src/components/Header.jsx
 import React, { useRef } from 'react';
 
-const Header = ({ onSave, onLoad }) => {
+const Header = ({ onSave, onLoad, onUndo, onRedo }) => {
     const fileInputRef = useRef(null);
 
     const handleFileChange = (event) => {
@@ -15,7 +14,6 @@ const Header = ({ onSave, onLoad }) => {
     return (
         <header style={styles.header}>
             <div style={styles.logoSection}>
-                {/* Логотип */}
                 <svg width="40" height="40" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" style={{ borderRadius: '8px' }}>
                     <defs>
                         <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -48,6 +46,24 @@ const Header = ({ onSave, onLoad }) => {
             </div>
 
             <div style={styles.actions}>
+                {/* Undo Button */}
+                <button onClick={onUndo} style={styles.btnIcon} title="Отменить (Ctrl+Z)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 7v6h6" />
+                        <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6.36 2.64L3 13" />
+                    </svg>
+                </button>
+
+                {/* Redo Button */}
+                <button onClick={onRedo} style={styles.btnIcon} title="Вернуть (Ctrl+Y)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 7v6h-6" />
+                        <path d="M3 17a9 9 0 019-9 9 9 0 016.36 2.64L21 13" />
+                    </svg>
+                </button>
+
+                <div style={{ width: 1, height: 24, background: '#e0e0e0', margin: '0 10px' }} />
+
                 <input
                     type="file"
                     ref={fileInputRef}
@@ -56,7 +72,6 @@ const Header = ({ onSave, onLoad }) => {
                     onChange={handleFileChange}
                 />
 
-                {/* Кнопка Сохранить (с иконкой) */}
                 <button onClick={onSave} style={styles.btn}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '6px' }}>
                         <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
@@ -66,7 +81,6 @@ const Header = ({ onSave, onLoad }) => {
                     Сохранить
                 </button>
 
-                {/* Кнопка Загрузить (с иконкой) */}
                 <button onClick={() => fileInputRef.current.click()} style={styles.btnSecondary}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '6px' }}>
                         <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
@@ -92,7 +106,7 @@ const styles = {
         boxSizing: 'border-box',
         boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
         zIndex: 100,
-        flexShrink: 0 // Чтобы не сжимался
+        flexShrink: 0
     },
     logoSection: {
         display: 'flex',
@@ -107,7 +121,8 @@ const styles = {
     },
     actions: {
         display: 'flex',
-        gap: '10px'
+        alignItems: 'center',
+        gap: '6px'
     },
     btn: {
         display: 'flex',
@@ -134,6 +149,19 @@ const styles = {
         fontWeight: '500',
         fontSize: '14px',
         transition: 'background 0.2s'
+    },
+    btnIcon: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '36px',
+        height: '36px',
+        background: 'transparent',
+        color: '#555',
+        border: '1px solid #ddd',
+        borderRadius: '6px',
+        cursor: 'pointer',
+        transition: 'all 0.2s'
     }
 };
 

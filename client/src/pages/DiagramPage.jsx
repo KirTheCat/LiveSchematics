@@ -1,4 +1,3 @@
-// src/pages/DiagramPage.jsx
 import React, { useState, useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import ReactFlow, { ReactFlowProvider, Controls, Background } from 'reactflow';
@@ -38,6 +37,8 @@ const DiagramPage = () => {
             <Header
                 onSave={diagramLogic.saveDiagram}
                 onLoad={diagramLogic.loadDiagram}
+                onUndo={diagramLogic.undo}
+                onRedo={diagramLogic.redo}
             />
 
             <div style={styles.mainArea}>
@@ -55,6 +56,7 @@ const DiagramPage = () => {
                             onInit={diagramLogic.onInit}
                             onDrop={diagramLogic.onDrop}
                             onDragOver={diagramLogic.onDragOver}
+                            onNodeDragStart={diagramLogic.onNodeDragStart}
                             onNodeDragStop={diagramLogic.onNodeDragStop}
                             nodeTypes={nodeTypes}
                             defaultEdgeOptions={defaultEdgeOptions}

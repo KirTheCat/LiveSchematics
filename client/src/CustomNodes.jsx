@@ -88,7 +88,7 @@ export const DefaultBlock = memo(({ data, id, selected, style }) => {
     );
 });
 
-// --- 2. Круг (Ваш код полностью верный) ---
+// --- 2. Круг---
 export const CircleBlock = memo(({ data, id, selected, style }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [label, setLabel] = useState(data.label);
@@ -394,7 +394,7 @@ export const DatabaseBlock = memo(({ data, id, selected, style }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: 'transparent', // Прозрачный контейнер
+                background: 'transparent',
             }}
         >
             <NodeResizer color={strokeColor} isVisible={selected} minWidth={60} minHeight={60} />
