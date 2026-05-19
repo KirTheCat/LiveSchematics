@@ -36,7 +36,8 @@ const Inspector = ({
         height: '100%',
         overflow: 'hidden',
         boxSizing: 'border-box',
-        zIndex: 10
+        zIndex: 10,
+        flexShrink: 0
     };
 
     const getMarkerId = (marker) => {

@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 
 const Toolbar = () => {
-
     const [isOpen, setIsOpen] = useState(true);
 
     const onDragStart = (event, nodeType) => {
@@ -13,8 +12,8 @@ const Toolbar = () => {
     const asideStyle = {
         width: isOpen ? '80px' : '40px',
         minWidth: isOpen ? '80px' : '40px',
-        backgroundColor: '#f0f2f5',
-        borderRight: '1px solid #ddd',
+        backgroundColor: '#f8f9fa',
+        borderRight: '1px solid #e0e0e0',
         transition: 'width 0.2s ease-in-out',
         display: 'flex',
         flexDirection: 'column',
@@ -24,7 +23,6 @@ const Toolbar = () => {
         position: 'relative',
         overflow: 'hidden',
         zIndex: 10,
-        boxShadow: '2px 0 5px rgba(0,0,0,0.05)'
     };
 
     const iconContainerStyle = {
@@ -60,10 +58,8 @@ const Toolbar = () => {
                 {isOpen ? '◀' : '▶'}
             </button>
 
-          {isOpen && (
+            {isOpen && (
                 <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-
-                    {/* --- Иконки фигур --- */}
 
                     {/* Прямоугольник */}
                     <div title="Прямоугольник" className="dnd-node" onDragStart={(e) => onDragStart(e, 'default')} draggable style={iconContainerStyle}>
@@ -104,7 +100,6 @@ const Toolbar = () => {
                         </svg>
                     </div>
 
-                    {/* Разделитель */}
                     <div style={{ width: '80%', height: '1px', background: '#ddd', margin: '10px 0' }}></div>
 
                     {/* Текст (Буква А) */}

@@ -3,7 +3,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { applyNodeChanges, applyEdgeChanges, addEdge } from 'reactflow';
 import io from 'socket.io-client';
 
-const socket = io.connect(window.location.origin);
+const socket = io.connect(process.env.REACT_APP_SERVER_URL || window.location.origin);
 
 export const useDiagram = (roomId, user) => {
     const [nodes, setNodes] = useState([]);
@@ -468,6 +468,50 @@ export const useDiagram = (roomId, user) => {
         });
 
     }, [nodes]);
+// --- Сохранение данных
+    const saveDiagram = useCallback(() => {
+        if (nodes.length === 0) {
+            alert("Схема пуста, нечего сохранять.");
+            return;
+        }
+
+        const data = { nodes, edges };
+        const json = JSON.stringify(data, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `diagram-${roomId}-${Date.now()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }, [nodes, edges, roomId]);
+
+    const loadDiagram = useCallback((file) => {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            try {
+                const content = JSON.parse(e.target.result);
+
+                if (content.nodes && content.edges) {
+                    setNodes(content.nodes);
+                    setEdges(content.edges);
+                    socket.emit('nodes-change', { roomId, nodes: content.nodes });
+                    socket.emit('edges-change', { roomId, edges: content.edges });
+                } else {
+                    alert("Неверный формат файла. Ожидается объект с nodes и edges.");
+                }
+            } catch (err) {
+                alert("Ошибка чтения файла. Убедитесь, что это JSON файл.");
+                console.error(err);
+            }
+        };
+
+        reader.readAsText(file);
+    }, [roomId]);
 
     const isValidConnection = (connection) =>
         connection.source !== connection.target;
@@ -491,5 +535,7 @@ export const useDiagram = (roomId, user) => {
         handleEdgeChange,
         selectedNode: nodes.find((n) => n.selected),
         selectedEdge: edges.find((e) => e.selected),
+        saveDiagram,
+        loadDiagram,
     };
 };

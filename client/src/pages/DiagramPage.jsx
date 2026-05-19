@@ -5,6 +5,7 @@ import ReactFlow, { ReactFlowProvider, Controls, Background } from 'reactflow';
 
 import Toolbar from '../Toolbar';
 import Inspector from '../Inspector';
+import Header from '../components/Header';
 import { ConnectionLine } from '../ConnectionLine';
 import MarkerDefinitions from '../components/MarkerDefinitions';
 import { useDiagram } from '../hooks/useDiagram';
@@ -33,50 +34,79 @@ const DiagramPage = () => {
     };
 
     return (
-        <div style={{ width: '100vw', height: '100vh', display: 'flex', overflow: 'hidden' }}>
-            <Toolbar />
-            <div style={{ flexGrow: 1, position: 'relative'}}>
-                <ReactFlowProvider>
-                    <ReactFlow
-                        className={showHandles ? '' : 'hide-handles'}
-                        nodes={diagramLogic.nodes}
-                        edges={diagramLogic.edges}
-                        onNodesChange={diagramLogic.onNodesChange}
-                        onEdgesChange={diagramLogic.onEdgesChange}
-                        onConnect={diagramLogic.onConnect}
-                        onInit={diagramLogic.onInit}
-                        onDrop={diagramLogic.onDrop}
-                        onDragOver={diagramLogic.onDragOver}
-                        onNodeDrag={diagramLogic.onNodeDrag}
-                        onNodeDragStop={diagramLogic.onNodeDragStop}
-                        onNodeDragStart={diagramLogic.onNodeDragStart}
-                        nodeTypes={nodeTypes}
-                        defaultEdgeOptions={defaultEdgeOptions}
-                        isValidConnection={diagramLogic.isValidConnection}
-                        connectionLineComponent={ConnectionLine}
-                        fitView
-                        deleteKeyCode="Delete"
-                    >
-                        <Controls />
-                        <Background variant="dots" gap={12} size={1} />
-                        <MarkerDefinitions />
-                    </ReactFlow>
-                </ReactFlowProvider>
-            </div>
-
-            <Inspector
-                isOpen={isInspectorOpen}
-                onToggle={() => setIsInspectorOpen(!isInspectorOpen)}
-                selectedNode={diagramLogic.selectedNode}
-                selectedEdge={diagramLogic.selectedEdge}
-                onNodeChange={diagramLogic.handleNodeChange}
-                onEdgeChange={diagramLogic.handleEdgeChange}
-                showHandles={showHandles}
-                onToggleHandles={() => setShowHandles(!showHandles)}
-                roomInfo={diagramLogic.roomInfo}
+        <div style={styles.container}>
+            <Header
+                onSave={diagramLogic.saveDiagram}
+                onLoad={diagramLogic.loadDiagram}
             />
+
+            <div style={styles.mainArea}>
+                <Toolbar />
+
+                <div style={styles.canvasWrapper}>
+                    <ReactFlowProvider>
+                        <ReactFlow
+                            className={showHandles ? '' : 'hide-handles'}
+                            nodes={diagramLogic.nodes}
+                            edges={diagramLogic.edges}
+                            onNodesChange={diagramLogic.onNodesChange}
+                            onEdgesChange={diagramLogic.onEdgesChange}
+                            onConnect={diagramLogic.onConnect}
+                            onInit={diagramLogic.onInit}
+                            onDrop={diagramLogic.onDrop}
+                            onDragOver={diagramLogic.onDragOver}
+                            onNodeDragStop={diagramLogic.onNodeDragStop}
+                            nodeTypes={nodeTypes}
+                            defaultEdgeOptions={defaultEdgeOptions}
+                            isValidConnection={diagramLogic.isValidConnection}
+                            connectionLineComponent={ConnectionLine}
+                            fitView
+                            deleteKeyCode="Delete"
+                        >
+                            <Controls />
+                            <Background variant="dots" gap={12} size={1} />
+                            <MarkerDefinitions />
+                        </ReactFlow>
+                    </ReactFlowProvider>
+                </div>
+
+                <Inspector
+                    isOpen={isInspectorOpen}
+                    onToggle={() => setIsInspectorOpen(!isInspectorOpen)}
+                    selectedNode={diagramLogic.selectedNode}
+                    selectedEdge={diagramLogic.selectedEdge}
+                    onNodeChange={diagramLogic.handleNodeChange}
+                    onEdgeChange={diagramLogic.handleEdgeChange}
+                    showHandles={showHandles}
+                    onToggleHandles={() => setShowHandles(!showHandles)}
+                    roomInfo={diagramLogic.roomInfo}
+                />
+            </div>
         </div>
     );
+};
+
+const styles = {
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        width: '100%',
+        overflow: 'hidden',
+        backgroundColor: '#f0f2f5'
+    },
+    mainArea: {
+        display: 'flex',
+        flexGrow: 1,
+        height: 'calc(100% - 60px)',
+        overflow: 'hidden',
+    },
+    canvasWrapper: {
+        flexGrow: 1,
+        position: 'relative',
+        height: '100%',
+        overflow: 'hidden',
+    }
 };
 
 export default DiagramPage;
