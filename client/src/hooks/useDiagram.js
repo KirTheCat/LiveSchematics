@@ -3,7 +3,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { applyNodeChanges, applyEdgeChanges, addEdge } from 'reactflow';
 import io from 'socket.io-client';
 
-const socket = io.connect('http://localhost:3001');
+const socket = io.connect(window.location.origin);
 
 export const useDiagram = (roomId, user) => {
     const [nodes, setNodes] = useState([]);
@@ -147,6 +147,9 @@ export const useDiagram = (roomId, user) => {
 
             switch (type) {
                 case 'default':
+                    style = { width: 150, height: 80, background: '#fff' };
+                    break;
+
                 case 'class':
                     style = { width: 200, height: 250, background: '#fff' };
                     data.splitY = HEADER_HEIGHT + (240 - HEADER_HEIGHT) / 2;
