@@ -11,6 +11,16 @@ const MARKER_OPTIONS = [
     { label: 'Полый ромб (Агрегация)', value: 'diamond-hollow' },
 ];
 
+const safeColor = (color) => {
+    if (!color) return '#ffffff';
+    if (/^#[0-9A-Fa-f]{3}$/.test(color)) {
+        return '#' + color[1] + color[1] + color[2] + color[2] + color[3] + color[3];
+    }
+    if (!color.startsWith('#')) return '#ffffff';
+
+    return color;
+};
+
 const Inspector = ({
                        isOpen,
                        onToggle,
@@ -23,7 +33,6 @@ const Inspector = ({
                        roomInfo
                    }) => {
 
-    // --- Стили ---
     const containerStyle = {
         width: isOpen ? '280px' : '40px',
         minWidth: isOpen ? '280px' : '40px',
@@ -49,7 +58,6 @@ const Inspector = ({
         return marker.type || '';
     };
 
-    // --- Блок: Информация о комнате ---
     const renderRoomInfo = () => (
         <div style={styles.infoBlock}>
             <h4 style={styles.roomTitle} title={roomInfo?.roomName}>
@@ -66,7 +74,6 @@ const Inspector = ({
         </div>
     );
 
-    // --- Блок: Глобальные настройки (Точки) ---
     const renderGlobalSettings = () => (
         <div style={styles.settingsBlock}>
             <div style={styles.toggleRow}>
@@ -87,7 +94,6 @@ const Inspector = ({
         </div>
     );
 
-    // --- Блок: Свойства фигуры ---
     const renderNodeProperties = () => {
         if (!selectedNode) return null;
 
@@ -108,17 +114,20 @@ const Inspector = ({
 
                 <div style={styles.group}>
                     <label style={styles.label}>Цвет фона:</label>
-                    <input type="color" value={nodeStyle.background || '#ffffff'} onChange={(e) => handleChange('background', e.target.value)} />
+                    {/* Используем safeColor */}
+                    <input type="color" value={safeColor(nodeStyle.background)} onChange={(e) => handleChange('background', e.target.value)} />
                 </div>
 
                 <div style={styles.group}>
                     <label style={styles.label}>Цвет границы:</label>
-                    <input type="color" value={nodeStyle.borderColor || '#555555'} onChange={(e) => handleChange('borderColor', e.target.value)} />
+                    {/* Используем safeColor */}
+                    <input type="color" value={safeColor(nodeStyle.borderColor)} onChange={(e) => handleChange('borderColor', e.target.value)} />
                 </div>
 
                 <div style={styles.group}>
                     <label style={styles.label}>Цвет текста:</label>
-                    <input type="color" value={textStyle.color || '#000000'} onChange={(e) => handleChange('color', e.target.value, true)} />
+                    {/* Используем safeColor */}
+                    <input type="color" value={safeColor(textStyle.color)} onChange={(e) => handleChange('color', e.target.value, true)} />
                 </div>
 
                 <div style={styles.group}>
@@ -129,7 +138,6 @@ const Inspector = ({
         );
     };
 
-    // --- Блок: Свойства связи ---
     const renderEdgeProperties = () => {
         if (!selectedEdge) return null;
 
@@ -160,7 +168,7 @@ const Inspector = ({
 
                 <div style={styles.group}>
                     <label style={styles.label}>Цвет:</label>
-                    <input type="color" value={edgeStyle.stroke || '#333'} onChange={(e) => handleChange('style', { ...edgeStyle, stroke: e.target.value })} />
+                    <input type="color" value={safeColor(edgeStyle.stroke)} onChange={(e) => handleChange('style', { ...edgeStyle, stroke: e.target.value })} />
                 </div>
 
                 <div style={styles.group}>
@@ -180,7 +188,6 @@ const Inspector = ({
         );
     };
 
-    // --- Рендер ---
     return (
         <aside style={containerStyle}>
 
