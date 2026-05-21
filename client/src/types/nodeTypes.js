@@ -2,7 +2,7 @@
 import {
     DefaultBlock, CircleBlock, CloudBlock, TextBlock,
     ActorBlock, DatabaseBlock, DiamondBlock, ClassBlock, GroupBlock
-} from '../CustomNodes';
+} from '../components/CustomNodes';
 
 export const nodeTypes = {
     default: DefaultBlock,

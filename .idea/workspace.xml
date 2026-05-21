@@ -4,13 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b03175-5647-4966-a20c-688edb0341d7" name="Changes" comment="Fixed textblock and UML block&#10;minor fixes">
+    <list default="true" id="08b03175-5647-4966-a20c-688edb0341d7" name="Changes" comment="fixed color problem">
+      <change afterPath="$PROJECT_DIR$/client/src/components/ContextMenu.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/useDrag.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/favicon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ConnectionLine.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ConnectionLine.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/CustomNodes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/CustomNodes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Inspector.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Inspector.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Toolbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Toolbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/hooks/useDiagram/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/useDiagram/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/hooks/useDiagram/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/useDiagram/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/DiagramPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/DiagramPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/types/nodeTypes.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/types/nodeTypes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +27,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="JavaScript File" />
+        <option value="Dockerfile" />
         <option value="JSX File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -59,13 +66,14 @@
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;Node.js.App.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.index.js.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/kiril/Dev/LiveSchematics_client&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/kiril/Dev/LiveSchematics/server/index.js&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -80,11 +88,15 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\kiril\Dev\LiveSchematics\client\src\components" />
       <recent name="C:\Users\kiril\Dev\LiveSchematics_client\client" />
       <recent name="C:\Users\kiril\Dev\LiveSchematics_client\client\src\types" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="npm.start">
+    <configuration name="index.js" type="NodeJSConfigurationType" nameIsGenerated="true" path-to-js-file="server/index.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
     <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/client/package.json" />
       <command value="run" />
@@ -95,6 +107,10 @@
       <envs />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Node.js.index.js" />
+      <item itemvalue="npm.start" />
+    </list>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -122,7 +138,13 @@
       <workItem from="1778842217413" duration="7252000" />
       <workItem from="1779015539343" duration="12800000" />
       <workItem from="1779103849587" duration="2834000" />
-      <workItem from="1779122096740" duration="5576000" />
+      <workItem from="1779122096740" duration="7107000" />
+      <workItem from="1779131142636" duration="282000" />
+      <workItem from="1779131480639" duration="1489000" />
+      <workItem from="1779133155771" duration="82000" />
+      <workItem from="1779170422037" duration="1930000" />
+      <workItem from="1779186614655" duration="8768000" />
+      <workItem from="1779205780969" duration="20925000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -188,7 +210,71 @@
       <option name="project" value="LOCAL" />
       <updated>1779128603624</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Minor design changes">
+      <option name="closed" value="true" />
+      <created>1779129557055</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1779129557055</updated>
+    </task>
+    <task id="LOCAL-00010" summary="init">
+      <option name="closed" value="true" />
+      <created>1779131358949</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1779131358949</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fixed DefaultBlock size">
+      <option name="closed" value="true" />
+      <created>1779171426541</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1779171426541</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Add docker configuration">
+      <option name="closed" value="true" />
+      <created>1779171769057</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1779171769057</updated>
+    </task>
+    <task id="LOCAL-00013" summary="*Add Header,&#10;*Add the ability to save to a file and unload from a file,&#10;*Minor changes in design,">
+      <option name="closed" value="true" />
+      <created>1779192949326</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1779192949326</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Add 'undo' and 'redo';&#10;Refactor useDiagram;&#10;minor fixes">
+      <option name="closed" value="true" />
+      <created>1779207966029</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1779207966029</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Add 'undo' and 'redo';&#10;Refactor useDiagram;&#10;minor fixes">
+      <option name="closed" value="true" />
+      <created>1779208959844</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1779208959844</updated>
+    </task>
+    <task id="LOCAL-00016" summary="fixed color problem">
+      <option name="closed" value="true" />
+      <created>1779279553159</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1779279553159</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -248,6 +334,13 @@
     <MESSAGE value="Updated Inspector.jsx" />
     <MESSAGE value="Updated Toolbar.jsx" />
     <MESSAGE value="Fixed textblock and UML block&#10;minor fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed textblock and UML block&#10;minor fixes" />
+    <MESSAGE value="Minor design changes" />
+    <MESSAGE value="init" />
+    <MESSAGE value="fixed DefaultBlock size" />
+    <MESSAGE value="Add docker configuration" />
+    <MESSAGE value="*Add Header,&#10;*Add the ability to save to a file and unload from a file,&#10;*Minor changes in design," />
+    <MESSAGE value="Add 'undo' and 'redo';&#10;Refactor useDiagram;&#10;minor fixes" />
+    <MESSAGE value="fixed color problem" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed color problem" />
   </component>
 </project>

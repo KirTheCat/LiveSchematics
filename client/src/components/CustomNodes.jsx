@@ -530,6 +530,25 @@ export const ClassBlock = memo(({ data, id, selected, style }) => {
     const classHeight = nodeStyle.height || 200;
     const splitY = data.splitY || (40 + (classHeight - 40)/2);
 
+    const getZoneStyle = (zoneName) => {
+        const isActive = activeZone === zoneName;
+        return {
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            background: isActive
+                ? 'rgba(34,105,184,0.82)'
+                : 'transparent',
+            border: isActive
+                ? '2px dashed #007bff'
+                : 'none',
+            transition: 'background 0.2s, border 0.2s',
+            overflow: 'hidden',
+            zIndex: 1,
+            boxSizing: 'border-box'
+        };
+    };
+
     return (
         <div
             style={{
@@ -585,37 +604,24 @@ export const ClassBlock = memo(({ data, id, selected, style }) => {
             {/* Зона Атрибутов */}
             <div
                 style={{
-                    position: 'absolute',
+                    ...getZoneStyle('attributes'),
                     top: '40px',
-                    left: 0,
-                    right: 0,
                     height: `${splitY - 40}px`,
-                    background: activeZone === 'attributes' ? 'rgba(0, 123, 255, 0.1)' : '#fff',
                     borderBottom: `2px solid ${nodeStyle.borderColor || '#555'}`,
-                    transition: 'background 0.2s',
-                    overflow: 'hidden',
-                    zIndex: 1
                 }}
             />
 
             {/* Зона Методов */}
             <div
                 style={{
-                    position: 'absolute',
+                    ...getZoneStyle('methods'),
                     top: `${splitY}px`,
-                    left: 0,
-                    right: 0,
                     bottom: 0,
-                    background: activeZone === 'methods' ? 'rgba(0, 123, 255, 0.1)' : '#fff',
-                    transition: 'background 0.2s',
-                    overflow: 'hidden',
-                    zIndex: 1
                 }}
             />
         </div>
     );
 });
-
 // --- 9. Группа / Контейнер ---
 export const GroupBlock = memo(({ data, id, selected, style }) => {
     const nodeStyle = style || {};

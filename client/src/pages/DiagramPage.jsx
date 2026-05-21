@@ -1,16 +1,24 @@
-import React, { useState, useMemo } from 'react';
+// src/pages/DiagramPage.jsx
+import React, {useState, useMemo, useCallback} from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import ReactFlow, { ReactFlowProvider, Controls, Background } from 'reactflow';
 
-import Toolbar from '../Toolbar';
-import Inspector from '../Inspector';
+import Toolbar from '../components/Toolbar';
+import Inspector from '../components/Inspector';
 import Header from '../components/Header';
-import { ConnectionLine } from '../ConnectionLine';
+import { ConnectionLine } from '../components/ConnectionLine';
 import MarkerDefinitions from '../components/MarkerDefinitions';
 import { useDiagram } from '../hooks/useDiagram';
-import { nodeTypes } from '../types/nodeTypes';
+import { nodeTypes as importedNodeTypes } from '../types/nodeTypes';
 import '../App.css';
 import 'reactflow/dist/style.css';
+import ContextMenu from '../components/ContextMenu';
+
+const defaultEdgeOptions = {
+    type: 'smoothstep',
+    markerEnd: 'arrow',
+    style: { strokeWidth: 2, stroke: '#333' }
+};
 
 const DiagramPage = () => {
     const { roomId } = useParams();
@@ -25,12 +33,22 @@ const DiagramPage = () => {
 
     const [isInspectorOpen, setIsInspectorOpen] = useState(true);
     const [showHandles, setShowHandles] = useState(true);
-
     const diagramLogic = useDiagram(roomId, user);
+    const nodeTypes = useMemo(() => importedNodeTypes, []);
+    const [contextMenu, setContextMenu] = useState(null);
 
-    const defaultEdgeOptions = {
-        type: 'smoothstep', markerEnd: 'arrow', style: { strokeWidth: 2, stroke: '#333' }
-    };
+    const onNodeContextMenu = useCallback((event, node) => {
+        event.preventDefault();
+        setContextMenu({
+            x: event.clientX,
+            y: event.clientY,
+            nodeId: node.id
+        });
+    }, []);
+
+    const closeContextMenu = useCallback(() => {
+        setContextMenu(null);
+    }, []);
 
     return (
         <div style={styles.container}>
@@ -64,11 +82,22 @@ const DiagramPage = () => {
                             connectionLineComponent={ConnectionLine}
                             fitView
                             deleteKeyCode="Delete"
+                            onNodeContextMenu={onNodeContextMenu}
                         >
                             <Controls />
                             <Background variant="dots" gap={12} size={1} />
                             <MarkerDefinitions />
                         </ReactFlow>
+                        {contextMenu && (
+                            <ContextMenu
+                                x={contextMenu.x}
+                                y={contextMenu.y}
+                                nodeId={contextMenu.nodeId}
+                                onClose={closeContextMenu}
+                                onDuplicate={diagramLogic.duplicateNode}
+                                onDelete={diagramLogic.deleteNode}
+                            />
+                        )}
                     </ReactFlowProvider>
                 </div>
 

@@ -1,8 +1,9 @@
+//src/hooks/useDiagram/index.js
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { applyNodeChanges, applyEdgeChanges, addEdge } from 'reactflow';
 import { useSync } from './useSync';
-import { createNode, getDropTarget, handleDropOnClass } from './utils';
-import { HEADER_HEIGHT } from './constants';
+import { createNode } from './utils';
+import { useDrag } from '../useDrag';
 
 const HISTORY_STORAGE_KEY = 'diagram_history_';
 
@@ -20,12 +21,9 @@ export const useDiagram = (roomId, user) => {
     const historyIndexRef = useRef(-1);
     const skipNextHistory = useRef(false);
 
-    const dragStartPosRef = useRef(null);
-
     useEffect(() => { nodesRef.current = nodes; }, [nodes]);
     useEffect(() => { edgesRef.current = edges; }, [edges]);
     useEffect(() => { historyRef.current = history; }, [history]);
-
     useEffect(() => {
         if (!roomId) return;
         try {
@@ -53,7 +51,6 @@ export const useDiagram = (roomId, user) => {
             if (state.edges) setEdges(state.edges);
             return;
         }
-
         setNodes(state.nodes || []);
         setEdges(state.edges || []);
         setRoomInfo({
@@ -61,35 +58,28 @@ export const useDiagram = (roomId, user) => {
             creatorName: state.creatorName,
             roomId: state.roomId,
         });
-
         if (state.nodes?.length > 0) {
             const lastId = Math.max(...state.nodes.map((n) => parseInt(n.id.replace('node-', ''), 10)));
             idCounter.current = (isNaN(lastId) ? 0 : lastId) + 1;
         }
-
         if (historyRef.current.length === 0) {
-            const initialState = { nodes: state.nodes || [], edges: state.edges || [] };
-            setHistory([initialState]);
+            setHistory([{ nodes: state.nodes || [], edges: state.edges || [] }]);
             historyIndexRef.current = 0;
         }
     }, []);
 
     const { emitNodes, emitEdges } = useSync(roomId, user, handleStateLoad);
+
     const pushToHistory = useCallback((newNodes, newEdges, actionName = "Action") => {
         if (skipNextHistory.current) {
             skipNextHistory.current = false;
             return;
         }
-
         const nodesSnapshot = newNodes ? JSON.parse(JSON.stringify(newNodes)) : JSON.parse(JSON.stringify(nodesRef.current));
         const edgesSnapshot = newEdges ? JSON.parse(JSON.stringify(newEdges)) : JSON.parse(JSON.stringify(edgesRef.current));
-
         const newHistoryEntry = { nodes: nodesSnapshot, edges: edgesSnapshot };
         const newHistory = historyRef.current.slice(0, historyIndexRef.current + 1);
         newHistory.push(newHistoryEntry);
-
-        console.log(`[History Push] ${actionName}. Count: ${nodesSnapshot.length}. Index: ${newHistory.length - 1}`);
-
         setHistory(newHistory);
         historyIndexRef.current = newHistory.length - 1;
     }, []);
@@ -134,10 +124,15 @@ export const useDiagram = (roomId, user) => {
         const hasRemoval = changes.some(c => c.type === 'remove');
 
         if (hasRemoval) {
-            const newNodes = applyNodeChanges(changes, nodesRef.current);
-            setNodes(newNodes);
-            emitNodes(newNodes);
-            pushToHistory(newNodes, edgesRef.current, "Remove Node");
+            setNodes((nds) => {
+                let newNodes = applyNodeChanges(changes, nds);
+                const removedIds = changes.filter(c => c.type === 'remove').map(c => c.id);
+                newNodes = newNodes.filter(n => !removedIds.includes(n.parentId));
+
+                emitNodes(newNodes);
+                pushToHistory(newNodes, edgesRef.current, "Remove Node");
+                return newNodes;
+            });
         } else {
             setNodes((nds) => {
                 const newNodes = applyNodeChanges(changes, nds);
@@ -158,6 +153,24 @@ export const useDiagram = (roomId, user) => {
             });
         }
     }, [emitNodes, pushToHistory]);
+
+    const deleteNode = useCallback((id) => {
+        setNodes((nds) => {
+            const idsToDelete = [id];
+            nds.forEach(n => {
+                if (n.parentId === id) idsToDelete.push(n.id);
+            });
+
+            const newNodes = nds.filter(n => !idsToDelete.includes(n.id));
+            emitNodes(newNodes);
+            pushToHistory(newNodes, edgesRef.current, "Delete Node");
+            return newNodes;
+        });
+    }, [emitNodes, pushToHistory]);
+
+    const { onNodeDragStart, onNodeDrag, onNodeDragStop } = useDrag(
+        nodesRef, setNodes, pushToHistory, edgesRef, reactFlowInstance
+    );
 
     const onEdgesChange = useCallback((changes) => {
         const hasRemoval = changes.some(c => c.type === 'remove');
@@ -182,56 +195,38 @@ export const useDiagram = (roomId, user) => {
         pushToHistory(nodesRef.current, newEdges, "Connect");
     }, [emitEdges, pushToHistory]);
 
-    const deleteNode = useCallback((id) => {
-        const newNodes = nodesRef.current.filter(n => n.id !== id);
-        setNodes(newNodes);
-        emitNodes(newNodes);
-        pushToHistory(newNodes, edgesRef.current, "Delete Node Button");
+    const duplicateNode = useCallback((id) => {
+        setNodes(nds => {
+            const nodeToCopy = nds.find(n => n.id === id);
+            if (!nodeToCopy) return nds;
+
+            const newParentId = `node-${idCounter.current}`;
+            const newParentNode = {
+                ...nodeToCopy,
+                id: newParentId,
+                position: { x: nodeToCopy.position.x + 50, y: nodeToCopy.position.y + 50 },
+                data: { ...nodeToCopy.data, label: `${nodeToCopy.data.label} (copy)` },
+                selected: false
+            };
+
+            const children = nds.filter(n => n.parentId === id);
+            const newChildren = children.map((child, i) => ({
+                ...child,
+                id: `node-${idCounter.current + i + 1}`,
+                parentId: newParentId,
+                position: child.position,
+                data: { ...child.data, parentId: newParentId },
+                selected: false
+            }));
+
+            idCounter.current += 1 + newChildren.length;
+
+            const updatedNodes = [...nds, newParentNode, ...newChildren];
+            pushToHistory(updatedNodes, edgesRef.current, "Duplicate Node");
+            emitNodes(updatedNodes);
+            return updatedNodes;
+        });
     }, [emitNodes, pushToHistory]);
-
-
-    const onNodeDragStart = useCallback((e, node) => {
-        dragStartPosRef.current = { x: node.position.x, y: node.position.y };
-    }, []);
-
-    const onNodeDragStop = useCallback((e, node) => {
-        setNodes(nds => nds.map(n =>
-            n.type === 'class' && n.data.activeDropZone ? { ...n, data: { ...n.data, activeDropZone: null } } : n
-        ));
-
-        const startPos = dragStartPosRef.current;
-        const moved = !startPos || (startPos.x !== node.position.x || startPos.y !== node.position.y);
-
-        const target = getDropTarget(node, nodesRef.current);
-
-        let historyAction = null;
-
-        if (target) {
-            setNodes(nds => {
-                const newNodes = handleDropOnClass(nds, node, target);
-                pushToHistory(newNodes, edgesRef.current, "Drop into Class");
-                return newNodes;
-            });
-        } else if (node.parentId) {
-            setNodes(nds => {
-                const parent = nds.find(n => n.id === node.parentId);
-                if (!parent) return nds;
-                const newNodes = nds.map(n => n.id === node.id ? {
-                    ...n,
-                    parentId: undefined, extent: undefined,
-                    position: { x: parent.position.x + n.position.x, y: parent.position.y + n.position.y },
-                    style: { ...n.style, width: 150, height: 40 },
-                    data: { ...n.data, parentId: null }
-                } : n);
-                pushToHistory(newNodes, edgesRef.current, "Drop out of Class");
-                return newNodes;
-            });
-        } else if (moved) {
-            pushToHistory(null, null, "Move Node");
-        }
-
-        dragStartPosRef.current = null;
-    }, [pushToHistory]);
 
     const onDrop = useCallback((e) => {
         e.preventDefault();
@@ -240,29 +235,15 @@ export const useDiagram = (roomId, user) => {
 
         const position = reactFlowInstance.screenToFlowPosition({ x: e.clientX, y: e.clientY });
         const newNode = createNode(type, position, idCounter.current, deleteNode);
-        const updatedNodes = [...nodesRef.current, newNode];
 
-        setNodes(updatedNodes);
-        emitNodes(updatedNodes);
-        pushToHistory(updatedNodes, edgesRef.current, `Add Node ${type}`);
-
+        setNodes(nds => {
+            const updated = [...nds, newNode];
+            emitNodes(updated);
+            pushToHistory(updated, edgesRef.current, `Add Node ${type}`);
+            return updated;
+        });
         idCounter.current += 1;
     }, [reactFlowInstance, deleteNode, emitNodes, pushToHistory]);
-
-    const onNodeDrag = useCallback((e, node) => {
-        if (node.type !== 'textblock') return;
-        const target = getDropTarget(node, nodesRef.current);
-        setNodes(nds => nds.map(n => {
-            if (n.type !== 'class') return n;
-            let activeDropZone = null;
-            if (n.id === target?.id) {
-                const relY = node.position.y - n.position.y;
-                const splitY = n.data.splitY || (HEADER_HEIGHT + 100);
-                if (relY > HEADER_HEIGHT) activeDropZone = relY < splitY ? 'attributes' : 'methods';
-            }
-            return n.data.activeDropZone === activeDropZone ? n : { ...n, data: { ...n.data, activeDropZone } };
-        }));
-    }, []);
 
     const handleNodeChange = useCallback((id, updates) => {
         setNodes(nds => {
@@ -335,13 +316,14 @@ export const useDiagram = (roomId, user) => {
         reader.readAsText(file);
     }, [emitNodes, emitEdges, pushToHistory]);
 
+
     return {
         nodes, edges, reactFlowInstance, roomInfo,
         onNodesChange, onEdgesChange, onConnect,
         onDrop, onDragOver: (e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; },
         onInit: setReactFlowInstance,
         onNodeDrag, onNodeDragStop, onNodeDragStart,
-        deleteNode,
+        deleteNode, duplicateNode,
         isValidConnection: (c) => c.source !== c.target,
         handleNodeChange, handleEdgeChange,
         selectedNode: nodes.find(n => n.selected),
