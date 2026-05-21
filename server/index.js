@@ -1,4 +1,3 @@
-// server/index.js
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -28,9 +27,20 @@ const roomSchema = new mongoose.Schema({
     creatorName: String,
     nodes: Array,
     edges: Array,
+    messages: [
+        {
+            system: Boolean,
+            text: String,
+            username: String,
+            time: String,
+            _id: false
+        }
+    ]
 });
 
 const Room = mongoose.model('Room', roomSchema);
+
+const roomUsers = {};
 
 io.on('connection', (socket) => {
     console.log(`User Connected: ${socket.id}`);
@@ -38,21 +48,36 @@ io.on('connection', (socket) => {
     socket.on('join-room', async ({ roomId, username, roomName }) => {
         socket.join(roomId);
 
+        if (!roomUsers[roomId]) {
+            roomUsers[roomId] = [];
+        }
+
+        const existingUserIndex = roomUsers[roomId].findIndex(u => u.socketId === socket.id);
+
+        if (existingUserIndex !== -1) {
+            roomUsers[roomId][existingUserIndex].username = username;
+            return;
+        }
+
+        roomUsers[roomId].push({ socketId: socket.id, username });
+        socket.currentRoom = roomId;
+        socket.currentUsername = username;
+
         let room = await Room.findOne({ roomId });
+        let isNewRoom = false;
 
         if (!room) {
-
+            isNewRoom = true;
             const name = roomName || "Новая комната";
             room = await Room.create({
                 roomId,
                 roomName: name,
                 creatorName: username,
                 nodes: [],
-                edges: []
+                edges: [],
+                messages: []
             });
-            console.log(`Room ${roomId} created by ${username}`);
         }
-
         socket.emit('load-state', {
             nodes: room.nodes,
             edges: room.edges,
@@ -61,7 +86,49 @@ io.on('connection', (socket) => {
             roomId: room.roomId
         });
 
+        socket.emit('chat-history', room.messages || []);
+
+        const userCount = roomUsers[roomId].length;
+
+        if (isNewRoom) {
+            await saveAndEmitMessage(roomId, {
+                system: true,
+                text: `Комната "${room.roomName}" создана`
+            });
+        }
+
+        await saveAndEmitMessage(roomId, {
+            system: true,
+            text: `Пользователь ${username} подключился. Всего пользователей: ${userCount}`
+        });
+
+        io.to(roomId).emit('users-update', roomUsers[roomId].map(u => u.username));
         socket.to(roomId).emit('user-joined', username);
+    });
+
+    async function saveAndEmitMessage(roomId, messageData) {
+        if (!messageData.time && !messageData.system) {
+            messageData.time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        await Room.updateOne(
+            { roomId },
+            { $push: { messages: messageData } }
+            // Ограничение истории: , { $slice: -100 }
+        );
+
+        io.to(roomId).emit('chat-message', messageData);
+    }
+
+    socket.on('send-chat-message', async ({ roomId, message, username }) => {
+        const messageData = {
+            system: false,
+            text: message,
+            username: username,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+
+        await saveAndEmitMessage(roomId, messageData);
     });
 
     socket.on('nodes-change', async ({ roomId, nodes }) => {
@@ -74,7 +141,27 @@ io.on('connection', (socket) => {
         socket.to(roomId).emit('edges-update', edges);
     });
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', async () => {
+        const { currentRoom, currentUsername } = socket;
+
+        if (currentRoom && roomUsers[currentRoom]) {
+            roomUsers[currentRoom] = roomUsers[currentRoom].filter(u => u.socketId !== socket.id);
+
+            const userCount = roomUsers[currentRoom].length;
+
+            if (currentUsername) {
+                await saveAndEmitMessage(currentRoom, {
+                    system: true,
+                    text: `Пользователь ${currentUsername} покинул комнату. Всего пользователей: ${userCount}`
+                });
+            }
+
+            io.to(currentRoom).emit('users-update', roomUsers[currentRoom].map(u => u.username));
+
+            if (userCount === 0) {
+                delete roomUsers[currentRoom];
+            }
+        }
         console.log('User Disconnected', socket.id);
     });
 });

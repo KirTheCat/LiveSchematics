@@ -13,6 +13,7 @@ import { nodeTypes as importedNodeTypes } from '../types/nodeTypes';
 import '../App.css';
 import 'reactflow/dist/style.css';
 import ContextMenu from '../components/ContextMenu';
+import Chat from "../components/Chat";
 
 const defaultEdgeOptions = {
     type: 'smoothstep',
@@ -61,7 +62,7 @@ const DiagramPage = () => {
 
             <div style={styles.mainArea}>
                 <Toolbar />
-
+                <Chat roomId={roomId} user={user} />
                 <div style={styles.canvasWrapper}>
                     <ReactFlowProvider>
                         <ReactFlow

@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import io from 'socket.io-client';
 
-const socket = io.connect(process.env.REACT_APP_SERVER_URL || window.location.origin);
+export const socket = io.connect(process.env.REACT_APP_SERVER_URL || window.location.origin);
 
 export const useSync = (roomId, user, onStateLoad) => {
 
