@@ -4,19 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b03175-5647-4966-a20c-688edb0341d7" name="Changes" comment="fixed color problem">
-      <change afterPath="$PROJECT_DIR$/client/src/components/ContextMenu.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/useDrag.js" afterDir="false" />
+    <list default="true" id="08b03175-5647-4966-a20c-688edb0341d7" name="Changes" comment="Add chat between users">
+      <change afterPath="$PROJECT_DIR$/client/src/pages/LobbyPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ConnectionLine.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ConnectionLine.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/CustomNodes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/CustomNodes.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Inspector.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Inspector.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Toolbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Toolbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Header.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/hooks/useDiagram/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/useDiagram/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/hooks/useDiagram/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/useDiagram/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/hooks/useDiagram/useSync.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/useDiagram/useSync.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/hooks/useDrag.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/useDrag.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/DiagramPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/DiagramPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/types/nodeTypes.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/types/nodeTypes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,6 +142,11 @@
       <workItem from="1779170422037" duration="1930000" />
       <workItem from="1779186614655" duration="8768000" />
       <workItem from="1779205780969" duration="20925000" />
+      <workItem from="1779368023811" duration="3617000" />
+      <workItem from="1779704854765" duration="847000" />
+      <workItem from="1779705787094" duration="1297000" />
+      <workItem from="1779807152150" duration="3728000" />
+      <workItem from="1779876738702" duration="2670000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -274,7 +276,23 @@
       <option name="project" value="LOCAL" />
       <updated>1779279553159</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="code refactor">
+      <option name="closed" value="true" />
+      <created>1779368324626</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1779368324626</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Add chat between users">
+      <option name="closed" value="true" />
+      <created>1779371495157</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1779371495157</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -341,6 +359,8 @@
     <MESSAGE value="*Add Header,&#10;*Add the ability to save to a file and unload from a file,&#10;*Minor changes in design," />
     <MESSAGE value="Add 'undo' and 'redo';&#10;Refactor useDiagram;&#10;minor fixes" />
     <MESSAGE value="fixed color problem" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed color problem" />
+    <MESSAGE value="code refactor" />
+    <MESSAGE value="Add chat between users" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add chat between users" />
   </component>
 </project>

@@ -7,7 +7,7 @@ import { useDrag } from '../useDrag';
 
 const HISTORY_STORAGE_KEY = 'diagram_history_';
 
-export const useDiagram = (roomId, user) => {
+export const useDiagram = (roomId, user,onError) => {
     const [nodes, setNodes] = useState([]);
     const [edges, setEdges] = useState([]);
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
@@ -68,7 +68,7 @@ export const useDiagram = (roomId, user) => {
         }
     }, []);
 
-    const { emitNodes, emitEdges } = useSync(roomId, user, handleStateLoad);
+    const { emitNodes, emitEdges } = useSync(roomId, user, handleStateLoad,onError);
 
     const pushToHistory = useCallback((newNodes, newEdges, actionName = "Action") => {
         if (skipNextHistory.current) {
@@ -309,9 +309,26 @@ export const useDiagram = (roomId, user) => {
                     setEdges(content.edges);
                     emitNodes(content.nodes);
                     emitEdges(content.edges);
+
+                    if (content.nodes.length > 0) {
+                        const maxId = content.nodes.reduce((max, node) => {
+                            const nodeId = parseInt(node.id.replace('node-', ''), 10);
+                            return isNaN(nodeId) ? max : Math.max(max, nodeId);
+                        }, 0);
+
+                        idCounter.current = maxId + 1;
+                    } else {
+                        idCounter.current = 1;
+                    }
+
                     pushToHistory(content.nodes, content.edges, "Load File");
+                } else {
+                    alert("Неверный формат файла.");
                 }
-            } catch { alert("Ошибка чтения"); }
+            } catch (err) {
+                console.error(err);
+                alert("Ошибка чтения файла. Убедитесь, что это JSON файл.");
+            }
         };
         reader.readAsText(file);
     }, [emitNodes, emitEdges, pushToHistory]);
