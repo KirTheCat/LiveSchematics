@@ -28,7 +28,6 @@ module.exports = (io, socket) => {
 
         if (!isNewJoin) return;
 
-
         if (roomName && room.roomName !== roomName) {
             await Room.updateOne({ roomId }, { roomName });
             room.roomName = roomName;
@@ -45,6 +44,9 @@ module.exports = (io, socket) => {
         io.to(roomId).emit('room-status', { userCount });
         io.to(roomId).emit('users-update', userManager.getUsers(roomId).map(u => u.username));
         socket.to(roomId).emit('user-joined', username);
+
+        // --- ОПОВЕЩАЕМ ЛОББИ ---
+        io.emit('rooms-updated');
     });
 
     socket.on('leave-room', async () => {
@@ -101,4 +103,7 @@ async function handleUserLeave(socket, io) {
     socket.leave(roomId);
     socket.currentRoom = null;
     socket.currentUsername = null;
+
+    // --- ОПОВЕЩАЕМ ЛОББИ ---
+    io.emit('rooms-updated');
 }

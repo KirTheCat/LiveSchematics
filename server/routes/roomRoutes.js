@@ -8,10 +8,13 @@ router.get('/', async (req, res) => {
         const activeRoomIds = userManager.getActiveRoomIds();
         if (activeRoomIds.length === 0) return res.json([]);
 
-        const rooms = await Room.find({ roomId: { $in: activeRoomIds } }, 'roomId roomName creatorName');
+        const rooms = await Room.find({ roomId: { $in: activeRoomIds } }, 'roomId roomName creatorName hasPassword');
 
         const response = rooms.map(room => ({
-            ...room._doc,
+            roomId: room.roomId,
+            roomName: room.roomName,
+            creatorName: room.creatorName,
+            hasPassword: room.hasPassword,
             userCount: userManager.getUserCount(room.roomId)
         }));
         res.json(response);
@@ -21,7 +24,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const { roomId, roomName, creatorName } = req.body;
+    const { roomId, roomName, creatorName, password } = req.body;
     try {
         const existing = await Room.findOne({ roomId });
         if (existing) return res.status(400).json({ error: 'Комната с таким ID уже существует' });
@@ -30,13 +33,34 @@ router.post('/', async (req, res) => {
             roomId,
             roomName: roomName || "Новая комната",
             creatorName,
-            nodes: [],
-            edges: [],
-            messages: []
+            password: password || null,
+            hasPassword: !!password,
+            nodes: [], edges: [], messages: []
         });
-        res.json(newRoom);
+
+        const response = { ...newRoom._doc };
+        delete response.password;
+        res.json(response);
     } catch (err) {
         res.status(500).json({ error: 'Ошибка создания комнаты' });
+    }
+});
+
+router.post('/verify', async (req, res) => {
+    const { roomId, password } = req.body;
+    try {
+        const room = await Room.findOne({ roomId });
+        if (!room) return res.status(404).json({ success: false, error: 'Комната не найдена' });
+
+        if (!room.hasPassword) return res.json({ success: true });
+
+        if (room.password === password) {
+            res.json({ success: true });
+        } else {
+            res.status(401).json({ success: false, error: 'Неверный пароль' });
+        }
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Ошибка сервера' });
     }
 });
 

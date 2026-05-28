@@ -15,9 +15,7 @@ import '../App.css';
 import 'reactflow/dist/style.css';
 
 const defaultEdgeOptions = {
-    type: 'smoothstep',
-    markerEnd: 'arrow',
-    style: { strokeWidth: 2, stroke: '#333' }
+    type: 'smoothstep', markerEnd: 'arrow', style: { strokeWidth: 2, stroke: '#333' }
 };
 
 const DiagramPage = () => {
@@ -27,20 +25,24 @@ const DiagramPage = () => {
 
     const [showLeaveModal, setShowLeaveModal] = useState(false);
     const [isLastUser, setIsLastUser] = useState(false);
+
+    const user = useMemo(() => {
+        if (!location.state?.username) return null;
+        return {
+            username: location.state.username,
+            roomName: location.state.roomName
+        };
+    }, [location.state]);
+
     const [isInspectorOpen, setIsInspectorOpen] = useState(true);
     const [showHandles, setShowHandles] = useState(true);
     const [contextMenu, setContextMenu] = useState(null);
 
     useEffect(() => {
-        if (!location.state?.username) {
+        if (!user) {
             navigate('/');
         }
-    }, [location.state, navigate]);
-
-    const user = useMemo(() => ({
-        username: location.state?.username || 'Guest',
-        roomName: location.state?.roomName
-    }), [location.state]);
+    }, [user, navigate]);
 
     const handleJoinError = useCallback((error) => {
         alert(error.message);
@@ -72,9 +74,7 @@ const DiagramPage = () => {
 
     const closeContextMenu = useCallback(() => setContextMenu(null), []);
 
-    if (!location.state?.username) {
-        return null;
-    }
+    if (!user) return null;
 
     return (
         <div style={styles.container}>
@@ -88,7 +88,6 @@ const DiagramPage = () => {
 
             <div style={styles.mainArea}>
                 <Toolbar />
-
                 <div style={styles.canvasWrapper}>
                     <ReactFlowProvider>
                         <ReactFlow
@@ -115,12 +114,9 @@ const DiagramPage = () => {
                             <Background variant="dots" gap={12} size={1} />
                             <MarkerDefinitions />
                         </ReactFlow>
-
                         {contextMenu && (
                             <ContextMenu
-                                x={contextMenu.x}
-                                y={contextMenu.y}
-                                nodeId={contextMenu.nodeId}
+                                x={contextMenu.x} y={contextMenu.y} nodeId={contextMenu.nodeId}
                                 onClose={closeContextMenu}
                                 onDuplicate={diagramLogic.duplicateNode}
                                 onDelete={diagramLogic.deleteNode}
@@ -148,48 +144,22 @@ const DiagramPage = () => {
                 <div style={styles.modalOverlay}>
                     <div style={styles.modal}>
                         <h3>Выход из комнаты</h3>
-
                         {isLastUser ? (
                             <>
                                 <p>Вы последний участник. Комната будет удалена.</p>
                                 <p>Сохранить схему?</p>
                                 <div style={styles.modalButtons}>
-                                    <button
-                                        style={styles.btnSecondary}
-                                        onClick={() => setShowLeaveModal(false)}
-                                    >
-                                        Отмена
-                                    </button>
-                                    <button
-                                        style={styles.btnDanger}
-                                        onClick={() => confirmLeave(false)}
-                                    >
-                                        Выйти без сохранения
-                                    </button>
-                                    <button
-                                        style={styles.btnSuccess}
-                                        onClick={() => confirmLeave(true)}
-                                    >
-                                        Сохранить и выйти
-                                    </button>
+                                    <button style={styles.btnSecondary} onClick={() => setShowLeaveModal(false)}>Отмена</button>
+                                    <button style={styles.btnDanger} onClick={() => confirmLeave(false)}>Выйти без сохранения</button>
+                                    <button style={styles.btnSuccess} onClick={() => confirmLeave(true)}>Сохранить и выйти</button>
                                 </div>
                             </>
                         ) : (
                             <>
                                 <p>Выйти из комнаты?</p>
                                 <div style={styles.modalButtons}>
-                                    <button
-                                        style={styles.btnSecondary}
-                                        onClick={() => setShowLeaveModal(false)}
-                                    >
-                                        Отмена
-                                    </button>
-                                    <button
-                                        style={styles.btnDanger}
-                                        onClick={() => confirmLeave(false)}
-                                    >
-                                        Выйти
-                                    </button>
+                                    <button style={styles.btnSecondary} onClick={() => setShowLeaveModal(false)}>Отмена</button>
+                                    <button style={styles.btnDanger} onClick={() => confirmLeave(false)}>Выйти</button>
                                 </div>
                             </>
                         )}
@@ -201,75 +171,15 @@ const DiagramPage = () => {
 };
 
 const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        width: '100%',
-        overflow: 'hidden',
-        backgroundColor: '#f0f2f5'
-    },
-    mainArea: {
-        display: 'flex',
-        flexGrow: 1,
-        height: 'calc(100% - 60px)',
-        overflow: 'hidden'
-    },
-    canvasWrapper: {
-        flexGrow: 1,
-        position: 'relative',
-        height: '100%',
-        overflow: 'hidden'
-    },
-    modalOverlay: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 2000
-    },
-    modal: {
-        background: '#fff',
-        padding: '20px',
-        borderRadius: '8px',
-        width: '400px',
-        boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
-        textAlign: 'center'
-    },
-    modalButtons: {
-        marginTop: '20px',
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '10px'
-    },
-    btnSecondary: {
-        padding: '8px 16px',
-        border: '1px solid #ccc',
-        background: '#fff',
-        borderRadius: '4px',
-        cursor: 'pointer'
-    },
-    btnDanger: {
-        padding: '8px 16px',
-        border: 'none',
-        background: '#dc3545',
-        color: '#fff',
-        borderRadius: '4px',
-        cursor: 'pointer'
-    },
-    btnSuccess: {
-        padding: '8px 16px',
-        border: 'none',
-        background: '#28a745',
-        color: '#fff',
-        borderRadius: '4px',
-        cursor: 'pointer'
-    }
+    container: { display: 'flex', flexDirection: 'column', height: '100%', width: '100%', overflow: 'hidden', backgroundColor: '#f0f2f5' },
+    mainArea: { display: 'flex', flexGrow: 1, height: 'calc(100% - 60px)', overflow: 'hidden' },
+    canvasWrapper: { flexGrow: 1, position: 'relative', height: '100%', overflow: 'hidden' },
+    modalOverlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 2000 },
+    modal: { background: '#fff', padding: '20px', borderRadius: '8px', width: '400px', boxShadow: '0 4px 10px rgba(0,0,0,0.2)', textAlign: 'center' },
+    modalButtons: { marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px' },
+    btnSecondary: { padding: '8px 16px', border: '1px solid #ccc', background: '#fff', borderRadius: '4px', cursor: 'pointer' },
+    btnDanger: { padding: '8px 16px', border: 'none', background: '#dc3545', color: '#fff', borderRadius: '4px', cursor: 'pointer' },
+    btnSuccess: { padding: '8px 16px', border: 'none', background: '#28a745', color: '#fff', borderRadius: '4px', cursor: 'pointer' }
 };
 
 export default DiagramPage;

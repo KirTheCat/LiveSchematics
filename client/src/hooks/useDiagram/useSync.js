@@ -1,4 +1,3 @@
-//hooks/useDiagram/useSync.js
 import { useEffect } from 'react';
 import io from 'socket.io-client';
 
@@ -7,6 +6,7 @@ export const socket = io.connect(process.env.REACT_APP_SERVER_URL || window.loca
 export const useSync = (roomId, user, onStateLoad, onJoinError) => {
 
     useEffect(() => {
+        // ИСПРАВЛЕНИЕ: Не делаем ничего, если нет user (например, при редиректе)
         if (!roomId || !user) return;
 
         socket.emit('join-room', {

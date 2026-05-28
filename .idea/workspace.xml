@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b03175-5647-4966-a20c-688edb0341d7" name="Changes" comment="Add chat between users">
-      <change afterPath="$PROJECT_DIR$/client/src/pages/LobbyPage.jsx" afterDir="false" />
+    <list default="true" id="08b03175-5647-4966-a20c-688edb0341d7" name="Changes" comment="Server code refactor">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/hooks/useDiagram/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/useDiagram/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/hooks/useDiagram/useSync.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/useDiagram/useSync.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/hooks/useDrag.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/useDrag.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/DiagramPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/DiagramPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/LobbyPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/LobbyPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/Room.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/Room.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/roomRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/roomRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sockets/handlers.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/sockets/handlers.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +69,8 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.17.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.17.58&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/kiril/Dev/LiveSchematics/server/index.js&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
@@ -146,7 +148,9 @@
       <workItem from="1779704854765" duration="847000" />
       <workItem from="1779705787094" duration="1297000" />
       <workItem from="1779807152150" duration="3728000" />
-      <workItem from="1779876738702" duration="2670000" />
+      <workItem from="1779876738702" duration="5206000" />
+      <workItem from="1779887006430" duration="2255000" />
+      <workItem from="1779968588096" duration="2681000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -292,7 +296,31 @@
       <option name="project" value="LOCAL" />
       <updated>1779371495157</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Added room list&#10;Added leave button into room&#10;Minor fixes">
+      <option name="closed" value="true" />
+      <created>1779879608412</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1779879608412</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Added room list&#10;Added leave button into room&#10;Minor fixes">
+      <option name="closed" value="true" />
+      <created>1779879643665</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1779879643665</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Server code refactor">
+      <option name="closed" value="true" />
+      <created>1779881010810</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1779881010810</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -361,6 +389,9 @@
     <MESSAGE value="fixed color problem" />
     <MESSAGE value="code refactor" />
     <MESSAGE value="Add chat between users" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add chat between users" />
+    <MESSAGE value="Fixed" />
+    <MESSAGE value="Added room list&#10;Added leave button into room&#10;Minor fixes" />
+    <MESSAGE value="Server code refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="Server code refactor" />
   </component>
 </project>
