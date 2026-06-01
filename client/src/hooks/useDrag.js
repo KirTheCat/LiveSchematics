@@ -95,7 +95,6 @@ export const useDrag = (nodesRef, setNodes, pushToHistory, edgesRef, rfInstance)
 
         if (targetClass) {
             setNodes(nds => {
-                const currentAbsPos = getAbsolutePosition(node, nds);
                 const newNodes = handleDropOnClass(nds, node, targetClass, mousePos.x, mousePos.y);
                 pushToHistory(newNodes, edgesRef.current, "Drop into Class");
                 return newNodes;
@@ -103,8 +102,6 @@ export const useDrag = (nodesRef, setNodes, pushToHistory, edgesRef, rfInstance)
         } else {
             if (node.parentId) {
                 setNodes(nds => {
-
-                    const currentAbsPos = getAbsolutePosition(node, nds);
 
                     const finalX = mousePos.x - (node.width || 150) / 2;
                     const finalY = mousePos.y - (node.height || 40) / 2;

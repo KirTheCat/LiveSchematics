@@ -1,21 +1,26 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import ReactFlow, { ReactFlowProvider, Controls, Background } from 'reactflow';
-import Toolbar from '../components/Toolbar';
-import Inspector from '../components/Inspector';
-import Header from '../components/Header';
-import { ConnectionLine } from '../components/ConnectionLine';
-import MarkerDefinitions from '../components/MarkerDefinitions';
+
+import Toolbar from '../components/DiagramPage/Toolbar';
+import Inspector from '../components/DiagramPage/Inspector';
+import Header from '../components/DiagramPage/Header';
+import { ConnectionLine } from '../components/DiagramPage/ConnectionLine';
+import MarkerDefinitions from '../components/DiagramPage/MarkerDefinitions';
+import Chat from '../components/DiagramPage/Chat';
+import ContextMenu from '../components/DiagramPage/ContextMenu';
+import LeaveRoomModal from '../components/Modals/LeaveRoomModal';
+
 import { useDiagram } from '../hooks/useDiagram';
 import { nodeTypes as importedNodeTypes } from '../types/nodeTypes';
-import Chat from '../components/Chat';
-import ContextMenu from '../components/ContextMenu';
-import { socket } from '../hooks/useDiagram/useSync';
-import '../App.css';
+
+import styles from './DiagramPage.module.css';
 import 'reactflow/dist/style.css';
 
 const defaultEdgeOptions = {
-    type: 'smoothstep', markerEnd: 'arrow', style: { strokeWidth: 2, stroke: '#333' }
+    type: 'smoothstep',
+    markerEnd: 'arrow',
+    style: { strokeWidth: 2, stroke: '#333' }
 };
 
 const DiagramPage = () => {
@@ -25,6 +30,9 @@ const DiagramPage = () => {
 
     const [showLeaveModal, setShowLeaveModal] = useState(false);
     const [isLastUser, setIsLastUser] = useState(false);
+    const [isInspectorOpen, setIsInspectorOpen] = useState(true);
+    const [showHandles, setShowHandles] = useState(true);
+    const [contextMenu, setContextMenu] = useState(null);
 
     const user = useMemo(() => {
         if (!location.state?.username) return null;
@@ -34,14 +42,8 @@ const DiagramPage = () => {
         };
     }, [location.state]);
 
-    const [isInspectorOpen, setIsInspectorOpen] = useState(true);
-    const [showHandles, setShowHandles] = useState(true);
-    const [contextMenu, setContextMenu] = useState(null);
-
     useEffect(() => {
-        if (!user) {
-            navigate('/');
-        }
+        if (!user) navigate('/');
     }, [user, navigate]);
 
     const handleJoinError = useCallback((error) => {
@@ -53,17 +55,22 @@ const DiagramPage = () => {
     const nodeTypes = useMemo(() => importedNodeTypes, []);
 
     const handleLeaveClick = () => {
-        socket.emit('check-last-user', roomId, (isLast) => {
-            setIsLastUser(isLast);
-            setShowLeaveModal(true);
-        });
+
+        if (diagramLogic.checkLastUser) {
+            diagramLogic.checkLastUser((isLast) => {
+                setIsLastUser(isLast);
+                setShowLeaveModal(true);
+            });
+        }
     };
 
     const confirmLeave = (save) => {
         if (save) {
             diagramLogic.saveDiagram();
         }
-        socket.emit('leave-room');
+        if (diagramLogic.leaveRoom) {
+            diagramLogic.leaveRoom();
+        }
         navigate('/');
     };
 
@@ -77,7 +84,7 @@ const DiagramPage = () => {
     if (!user) return null;
 
     return (
-        <div style={styles.container}>
+        <div className={styles.container}>
             <Header
                 onSave={diagramLogic.saveDiagram}
                 onLoad={diagramLogic.loadDiagram}
@@ -86,9 +93,10 @@ const DiagramPage = () => {
                 onLeave={handleLeaveClick}
             />
 
-            <div style={styles.mainArea}>
+            <div className={styles.mainArea}>
                 <Toolbar />
-                <div style={styles.canvasWrapper}>
+
+                <div className={styles.canvasWrapper}>
                     <ReactFlowProvider>
                         <ReactFlow
                             className={showHandles ? '' : 'hide-handles'}
@@ -114,9 +122,12 @@ const DiagramPage = () => {
                             <Background variant="dots" gap={12} size={1} />
                             <MarkerDefinitions />
                         </ReactFlow>
+
                         {contextMenu && (
                             <ContextMenu
-                                x={contextMenu.x} y={contextMenu.y} nodeId={contextMenu.nodeId}
+                                x={contextMenu.x}
+                                y={contextMenu.y}
+                                nodeId={contextMenu.nodeId}
                                 onClose={closeContextMenu}
                                 onDuplicate={diagramLogic.duplicateNode}
                                 onDelete={diagramLogic.deleteNode}
@@ -140,46 +151,14 @@ const DiagramPage = () => {
 
             <Chat roomId={roomId} user={user} />
 
-            {showLeaveModal && (
-                <div style={styles.modalOverlay}>
-                    <div style={styles.modal}>
-                        <h3>Выход из комнаты</h3>
-                        {isLastUser ? (
-                            <>
-                                <p>Вы последний участник. Комната будет удалена.</p>
-                                <p>Сохранить схему?</p>
-                                <div style={styles.modalButtons}>
-                                    <button style={styles.btnSecondary} onClick={() => setShowLeaveModal(false)}>Отмена</button>
-                                    <button style={styles.btnDanger} onClick={() => confirmLeave(false)}>Выйти без сохранения</button>
-                                    <button style={styles.btnSuccess} onClick={() => confirmLeave(true)}>Сохранить и выйти</button>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <p>Выйти из комнаты?</p>
-                                <div style={styles.modalButtons}>
-                                    <button style={styles.btnSecondary} onClick={() => setShowLeaveModal(false)}>Отмена</button>
-                                    <button style={styles.btnDanger} onClick={() => confirmLeave(false)}>Выйти</button>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </div>
-            )}
+            <LeaveRoomModal
+                isOpen={showLeaveModal}
+                isLastUser={isLastUser}
+                onClose={() => setShowLeaveModal(false)}
+                onConfirm={confirmLeave}
+            />
         </div>
     );
-};
-
-const styles = {
-    container: { display: 'flex', flexDirection: 'column', height: '100%', width: '100%', overflow: 'hidden', backgroundColor: '#f0f2f5' },
-    mainArea: { display: 'flex', flexGrow: 1, height: 'calc(100% - 60px)', overflow: 'hidden' },
-    canvasWrapper: { flexGrow: 1, position: 'relative', height: '100%', overflow: 'hidden' },
-    modalOverlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 2000 },
-    modal: { background: '#fff', padding: '20px', borderRadius: '8px', width: '400px', boxShadow: '0 4px 10px rgba(0,0,0,0.2)', textAlign: 'center' },
-    modalButtons: { marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px' },
-    btnSecondary: { padding: '8px 16px', border: '1px solid #ccc', background: '#fff', borderRadius: '4px', cursor: 'pointer' },
-    btnDanger: { padding: '8px 16px', border: 'none', background: '#dc3545', color: '#fff', borderRadius: '4px', cursor: 'pointer' },
-    btnSuccess: { padding: '8px 16px', border: 'none', background: '#28a745', color: '#fff', borderRadius: '4px', cursor: 'pointer' }
 };
 
 export default DiagramPage;

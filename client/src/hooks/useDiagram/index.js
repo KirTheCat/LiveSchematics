@@ -68,7 +68,7 @@ export const useDiagram = (roomId, user,onError) => {
         }
     }, []);
 
-    const { emitNodes, emitEdges } = useSync(roomId, user, handleStateLoad,onError);
+    const { emitNodes, emitEdges, checkLastUser, leaveRoom } = useSync(roomId, user, handleStateLoad, onError);
 
     const pushToHistory = useCallback((newNodes, newEdges, actionName = "Action") => {
         if (skipNextHistory.current) {
@@ -347,5 +347,7 @@ export const useDiagram = (roomId, user,onError) => {
         selectedEdge: edges.find(e => e.selected),
         saveDiagram, loadDiagram,
         undo, redo,
+        checkLastUser,
+        leaveRoom,
     };
 };

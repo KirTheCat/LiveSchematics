@@ -1,4 +1,4 @@
-// src/components/MarkerDefinitions.jsx
+// src/components/DiagramPage/MarkerDefinitions.jsx
 import React from 'react';
 
 const MarkerDefinitions = () => {

@@ -1,4 +1,4 @@
-// src/ConnectionLine.jsx
+// src/components/DiagramPage/ConnectionLine.jsx
 import React from 'react';
 
 export const ConnectionLine = ({ fromX, fromY, toX, toY }) => {
@@ -17,4 +17,4 @@ export const ConnectionLine = ({ fromX, fromY, toX, toY }) => {
             />
         </g>
     );
-};
+}

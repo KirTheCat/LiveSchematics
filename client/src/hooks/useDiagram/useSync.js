@@ -1,3 +1,4 @@
+//hooks/useDiagram/useSync.js
 import { useEffect } from 'react';
 import io from 'socket.io-client';
 
@@ -6,7 +7,6 @@ export const socket = io.connect(process.env.REACT_APP_SERVER_URL || window.loca
 export const useSync = (roomId, user, onStateLoad, onJoinError) => {
 
     useEffect(() => {
-        // ИСПРАВЛЕНИЕ: Не делаем ничего, если нет user (например, при редиректе)
         if (!roomId || !user) return;
 
         socket.emit('join-room', {
@@ -37,5 +37,13 @@ export const useSync = (roomId, user, onStateLoad, onJoinError) => {
     const emitNodes = (nodes) => socket.emit('nodes-change', { roomId, nodes });
     const emitEdges = (edges) => socket.emit('edges-change', { roomId, edges });
 
-    return { emitNodes, emitEdges };
+    const checkLastUser = (callback) => {
+        socket.emit('check-last-user', roomId, callback);
+    };
+
+    const leaveRoom = () => {
+        socket.emit('leave-room');
+    };
+
+    return { emitNodes, emitEdges, checkLastUser, leaveRoom };
 };

@@ -1,6 +1,6 @@
 /* src/components/Lobby/RoomList.jsx*/
 import React from 'react';
-import styles from './LobbyPage.module.css';
+import styles from '../../pages/LobbyPage.module.css';
 
 export const RoomList = ({ rooms, onJoin }) => (
     <div className={styles.listContainer}>

@@ -1,4 +1,4 @@
-// CustomNodes.jsx
+//src/components/DiagramPage/CustomNodes.jsx
 import React, { useState, useEffect, useRef, memo } from 'react';
 import { Handle, Position, NodeResizer } from 'reactflow';
 
