@@ -117,6 +117,8 @@ const DiagramPage = () => {
                             fitView
                             deleteKeyCode="Delete"
                             onNodeContextMenu={onNodeContextMenu}
+                            minZoom={0.05}
+                            maxZoom={2}
                         >
                             <Controls />
                             <Background variant="dots" gap={12} size={1} />

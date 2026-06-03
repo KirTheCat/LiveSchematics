@@ -4,28 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b03175-5647-4966-a20c-688edb0341d7" name="Changes" comment="Code refactor">
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/ActorBlock.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/CircleBlock.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/ClassBlock.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/CloudBlock.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/DatabaseBlock.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/DefaultBlock.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/DiamondBlock.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/GroupBlock.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/TextBlock.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/index.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/shared.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/useEditableNode.js" afterDir="false" />
+    <list default="true" id="08b03175-5647-4966-a20c-688edb0341d7" name="Changes" comment="fixed GroupBlock, improved zoom">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/DiagramPage/DiagramPage.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/config/db.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/models/Room.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/Room.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/roomRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/roomRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/sockets/handlers.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/sockets/handlers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/utils/userManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/utils/userManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/GroupBlock.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/GroupBlock.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/DiagramPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/DiagramPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,6 +148,8 @@
       <workItem from="1779887006430" duration="2255000" />
       <workItem from="1779968588096" duration="7005000" />
       <workItem from="1780308729161" duration="8420000" />
+      <workItem from="1780474289154" duration="1351000" />
+      <workItem from="1780480360913" duration="1583000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -359,7 +343,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780313456594</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="CustomNodes refactor">
+      <option name="closed" value="true" />
+      <created>1780474471549</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1780474471549</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -434,6 +426,8 @@
     <MESSAGE value="Added room division by access modifier 'public' and 'private'" />
     <MESSAGE value="Lobby Page refactor" />
     <MESSAGE value="Code refactor" />
-    <option name="LAST_COMMIT_MESSAGE" value="Code refactor" />
+    <MESSAGE value="CustomNodes refactor" />
+    <MESSAGE value="fixed GroupBlock, improved zoom" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed GroupBlock, improved zoom" />
   </component>
 </project>
