@@ -4,37 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b03175-5647-4966-a20c-688edb0341d7" name="Changes" comment="Lobby Page refactor">
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/Chat.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/ContextMenu.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/DiagramPage.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/Header.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/Inspector.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/Toolbar.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/Logo.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/Modals/LeaveRoomModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/useLobby.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/pages/DiagramPage.module.css" afterDir="false" />
+    <list default="true" id="08b03175-5647-4966-a20c-688edb0341d7" name="Changes" comment="Code refactor">
+      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/ActorBlock.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/CircleBlock.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/ClassBlock.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/CloudBlock.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/DatabaseBlock.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/DefaultBlock.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/DiamondBlock.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/GroupBlock.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/TextBlock.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes/shared.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/useEditableNode.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/Chat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ConnectionLine.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/ConnectionLine.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ContextMenu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/ContextMenu.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/CustomNodes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Inspector.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/Inspector.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Lobby/LobbyPage.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/LobbyPage.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Lobby/Logo.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Lobby/RoomList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Lobby/RoomList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/MarkerDefinitions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/MarkerDefinitions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Toolbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/DiagramPage/Toolbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/hooks/useDiagram/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/useDiagram/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/hooks/useDiagram/useSync.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/useDiagram/useSync.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/hooks/useDrag.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/useDrag.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/DiagramPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/DiagramPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/Home.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/LobbyPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/LobbyPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/types/nodeTypes.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/types/nodeTypes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/DiagramPage/CustomNodes.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/DiagramPage/DiagramPage.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/config/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/config/db.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/Room.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/Room.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/roomRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/roomRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/sockets/handlers.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/sockets/handlers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/utils/userManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/utils/userManager.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,11 +99,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\kiril\Dev\LiveSchematics\client\src\components" />
+      <recent name="C:\Users\kiril\Dev\LiveSchematics\server\src" />
+      <recent name="C:\Users\kiril\Dev\LiveSchematics\client\src\components\DiagramPage\CustomNodes" />
       <recent name="C:\Users\kiril\Dev\LiveSchematics\client\src\components\DiagramPage" />
+      <recent name="C:\Users\kiril\Dev\LiveSchematics\client\src\components" />
       <recent name="C:\Users\kiril\Dev\LiveSchematics\client\src\pages" />
-      <recent name="C:\Users\kiril\Dev\LiveSchematics_client\client" />
-      <recent name="C:\Users\kiril\Dev\LiveSchematics_client\client\src\types" />
     </key>
   </component>
   <component name="RunManager" selected="npm.start">
@@ -174,7 +165,7 @@
       <workItem from="1779876738702" duration="5206000" />
       <workItem from="1779887006430" duration="2255000" />
       <workItem from="1779968588096" duration="7005000" />
-      <workItem from="1780308729161" duration="3221000" />
+      <workItem from="1780308729161" duration="8420000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -360,7 +351,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779973425754</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Code refactor">
+      <option name="closed" value="true" />
+      <created>1780313456594</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1780313456594</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -434,6 +433,7 @@
     <MESSAGE value="Server code refactor" />
     <MESSAGE value="Added room division by access modifier 'public' and 'private'" />
     <MESSAGE value="Lobby Page refactor" />
-    <option name="LAST_COMMIT_MESSAGE" value="Lobby Page refactor" />
+    <MESSAGE value="Code refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="Code refactor" />
   </component>
 </project>
